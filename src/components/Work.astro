@@ -1,50 +1,87 @@
 ---
 import { Image } from 'astro:assets';
-import home from '../assets/work/petals-home.webp';
-import mobile from '../assets/work/petals-mobile.webp';
-import services from '../assets/work/petals-services.webp';
-import industries from '../assets/work/petals-industries.webp';
-import about from '../assets/work/petals-about.webp';
-const shots = [
-  [services, 'Services', 'Eight services, each with its own page and a real photo.', 'The services grid of the PETALS website, eight cards with site photos'],
-  [industries, 'Industries', 'Photo cards that show who they work for at a glance.', 'The industries section of the PETALS website, with photo cards for roads, rail and energy'],
-  [about, 'About', 'A dark section that tells their story through the letters of their name.', 'The dark about section of the PETALS website'],
+import pHome from '../assets/work/petals-home.webp';
+import pMobile from '../assets/work/petals-mobile.webp';
+import pServices from '../assets/work/petals-services.webp';
+import pIndustries from '../assets/work/petals-industries.webp';
+import pAbout from '../assets/work/petals-about.webp';
+import cHome from '../assets/work/privacy-home.webp';
+import cMobile from '../assets/work/privacy-mobile.webp';
+import cNumbers from '../assets/work/privacy-numbers.webp';
+import cStory from '../assets/work/privacy-story.webp';
+import cCompare from '../assets/work/privacy-compare.webp';
+
+const projects = [
+  {
+    name: 'PETALS Engineering Consultancy',
+    text: 'A full website for an engineering consultancy we worked with: home, eight service pages, industries, about, careers and contact. It explains complex technical work in a way anyone can follow.',
+    tags: [['Client project', true], ['Website design'], ['16 pages'], ['Desktop and phone']],
+    home: [pHome, 'Home page of the PETALS Engineering Consultancy website, with a layered ground drawing next to the headline'],
+    mobile: [pMobile, 'The PETALS home page on a phone'],
+    shots: [
+      [pServices, 'Services', 'Eight services, each with its own page and a real photo.', 'The services grid of the PETALS website, eight cards with site photos'],
+      [pIndustries, 'Industries', 'Photo cards that show who they work for at a glance.', 'The industries section of the PETALS website, with photo cards for roads, rail and energy'],
+      [pAbout, 'About', 'A dark section that tells their story through the letters of their name.', 'The dark about section of the PETALS website'],
+    ],
+  },
+  {
+    name: 'Privacy Checkup',
+    text: 'A product site we designed for an invented app that finds leaked passwords and files shared too widely. As you scroll, the page tells the story of a leak and how it gets fixed.',
+    tags: [['Concept project', true], ['Product website'], ['Scroll story'], ['Desktop and phone']],
+    dark: true,
+    home: [cHome, 'Privacy Checkup home page: the words "Your accounts are leaking" around a glowing globe, with alert cards'],
+    mobile: [cMobile, 'The Privacy Checkup home page on a phone, with three alert cards'],
+    shots: [
+      [cNumbers, 'The numbers', 'Four big figures, each with its source, to show why it matters.', 'Privacy Checkup section with four statistics on data leaks'],
+      [cStory, 'The story', 'Step by step, how one leak turns into a stolen account.', 'Privacy Checkup section showing a leak spreading, step by step'],
+      [cCompare, 'The comparison', 'A clear table against the free tools people already know.', 'Privacy Checkup comparison table against other tools'],
+    ],
+  },
 ];
 ---
 <section class="section" id="work">
   <div class="wrap">
-    <div class="head work__head">
+    <div class="head">
       <h2 class="h2">Recent work.</h2>
-      <div class="work__intro" data-reveal>
-        <h3>PETALS Engineering Consultancy</h3>
-        <p>A full website for an engineering consultancy we worked with: home, eight service pages, industries, about, careers and contact. It explains complex technical work in a way anyone can follow.</p>
-        <ul class="work__tags"><li class="is-client">Client project</li><li>Website design</li><li>16 pages</li><li>Desktop and phone</li></ul>
-      </div>
     </div>
-
-    <div class="work__feature" data-work-feature>
-      <div class="work__browser">
-        <div class="browser__bar"><i /><i /><i /></div>
-        <Image src={home} alt="Home page of the PETALS Engineering Consultancy website, with a layered ground drawing next to the headline" widths={[800, 1200, 1800]} sizes="(max-width: 860px) 92vw, 1100px" loading="lazy" />
-      </div>
-      <div class="work__phone">
-        <Image src={mobile} alt="The same home page on a phone" widths={[300, 600]} sizes="200px" loading="lazy" />
-      </div>
-    </div>
-
-    <div class="work__row">
-      {shots.map(([img, t, d, alt]) => (
-        <figure class="work__shot" data-reveal>
-          <div class="work__frame"><Image src={img} alt={alt} widths={[600, 1200]} sizes="(max-width: 860px) 92vw, 400px" loading="lazy" /></div>
-          <figcaption><b>{t}</b>{d}</figcaption>
-        </figure>
-      ))}
-    </div>
+    {projects.map((pr) => (
+      <article class:list={['project', { 'project--dark': pr.dark }]}>
+        <div class="work__intro" data-reveal>
+          <h3>{pr.name}</h3>
+          <p>{pr.text}</p>
+          <ul class="work__tags">{pr.tags.map(([t, on]) => <li class:list={{ 'is-client': on }}>{t}</li>)}</ul>
+        </div>
+        <div class="work__feature" data-work-feature>
+          <div class="work__browser">
+            <div class="browser__bar"><i /><i /><i /></div>
+            <Image src={pr.home[0]} alt={pr.home[1]} widths={[800, 1200, 1800]} sizes="(max-width: 860px) 92vw, 1100px" loading="lazy" />
+          </div>
+          <div class="work__phone">
+            <Image src={pr.mobile[0]} alt={pr.mobile[1]} widths={[300, 600]} sizes="200px" loading="lazy" />
+          </div>
+        </div>
+        <div class="work__row">
+          {pr.shots.map(([img, t, d, alt]) => (
+            <figure class="work__shot" data-reveal>
+              <div class="work__frame"><Image src={img} alt={alt} widths={[600, 1200]} sizes="(max-width: 860px) 92vw, 400px" loading="lazy" /></div>
+              <figcaption><b>{t}</b>{d}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </article>
+    ))}
   </div>
 </section>
 
 <style is:global>
-  .work__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: end; }
+  .project + .project { margin-top: clamp(96px, 14vw, 200px); }
+  .work__intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px 48px; align-items: start; margin-bottom: clamp(28px, 4vw, 48px); }
+  .work__intro p { margin-top: 0 !important; }
+  .work__tags { grid-column: 2; }
+  .project--dark .work__browser { border-color: #2a2a2a; background: #0b0b0b; }
+  .project--dark .work__browser .browser__bar { border-color: #222; }
+  .project--dark .work__browser .browser__bar i { background: #333; }
+  .project--dark .work__frame { border-color: #2a2a2a; background: #0b0b0b; }
   .work__intro h3 { font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
   .work__intro p { color: var(--muted); margin-top: 12px; max-width: 46ch; }
   .work__tags { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
@@ -71,7 +108,8 @@ const shots = [
   .work__shot figcaption { margin-top: 12px; color: var(--muted); font-size: var(--t-small); max-width: 36ch; }
   .work__shot figcaption b { display: block; color: var(--ink); font-size: var(--t-body); font-weight: 600; margin-bottom: 2px; }
   @media (max-width: 860px) {
-    .work__head { grid-template-columns: 1fr; }
+    .work__intro { grid-template-columns: 1fr; }
+    .work__tags { grid-column: 1; }
     .work__feature { padding-right: 18%; }
     .work__phone { width: 30%; bottom: -10%; }
     .work__row { grid-template-columns: 1fr; }

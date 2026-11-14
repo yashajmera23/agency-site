@@ -438,18 +438,18 @@ function processScroll() {
 
 /* Work cards: drift at different speeds and tilt toward the mouse. */
 function work() {
-  const feature = document.querySelector('[data-work-feature]');
-  if (!feature) return;
-  const browser = feature.querySelector('.work__browser');
-  const phone = feature.querySelector('.work__phone');
-  // The big screenshot opens up like a window as it scrolls in; the phone rides up past it.
-  gsap.fromTo(browser, { clipPath: 'inset(12% 8% 12% 8% round 16px)', scale: 0.94 }, {
-    clipPath: 'inset(0% 0% 0% 0% round 16px)', scale: 1, ease: 'none',
-    scrollTrigger: { trigger: feature, start: 'top 90%', end: 'top 30%', scrub: 0.6 },
-  });
-  gsap.fromTo(phone, { y: 140, rotation: 6 }, {
-    y: -30, rotation: 0, ease: 'none',
-    scrollTrigger: { trigger: feature, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+  document.querySelectorAll('[data-work-feature]').forEach((feature) => {
+    const browser = feature.querySelector('.work__browser');
+    const phone = feature.querySelector('.work__phone');
+    // The big screenshot opens up like a window as it scrolls in; the phone rides up past it.
+    gsap.fromTo(browser, { clipPath: 'inset(12% 8% 12% 8% round 16px)', scale: 0.94 }, {
+      clipPath: 'inset(0% 0% 0% 0% round 16px)', scale: 1, ease: 'none',
+      scrollTrigger: { trigger: feature, start: 'top 90%', end: 'top 30%', scrub: 0.6 },
+    });
+    gsap.fromTo(phone, { y: 140, rotation: 6 }, {
+      y: -30, rotation: 0, ease: 'none',
+      scrollTrigger: { trigger: feature, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+    });
   });
 }
 
