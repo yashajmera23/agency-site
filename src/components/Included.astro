@@ -1,22 +1,198 @@
 ---
+import MockSite from './MockSite.astro';
 const items = [
-  ['Up to 5 pages', 'Home, services, about, your work and contact. Enough for most local businesses.'],
-  ['Works on every phone', "We design for phones first, because that's where your customers look you up."],
-  ['Easy to contact you', 'A clear call button and a short form that sends straight to your email.'],
-  ['Found on Google', 'Google Maps on your page and the basic setup Google needs to list your site.'],
-  ['Your words and photos', 'Send us what you have. We tidy the text and make the photos look their best.'],
-  ['2 rounds of changes', 'You look at it and tell us what to change. We do that twice.'],
+  ['pages', '5 pages', 'Up to 5 pages', 'Home, services, about, your work and contact. Enough for most local businesses.'],
+  ['phone', 'Phone', 'Works on every phone', "We design for phones first, because that's where your customers look you up."],
+  ['contact', 'Contact', 'Easy to contact you', 'A clear call button and a short form that sends straight to your email.'],
+  ['google', 'Google', 'Found on Google', 'Google Maps on your page and the basic setup Google needs to list your site.'],
+  ['photos', 'Photos', 'Your words and photos', 'Send us what you have. We tidy the text and make the photos look their best.'],
+  ['changes', 'Changes', '2 rounds of changes', 'You look at it and tell us what to change. We do that twice.'],
 ];
 ---
-<section class="section" id="included">
+<section class="section kit" id="included">
   <div class="wrap">
     <div class="head">
-      <h2 class="h2" data-reveal>Everything a local business site needs.</h2>
+      <h2 class="h2">Everything a local business site needs.</h2>
     </div>
-    <div class="cols">
-      {items.map(([t, d]) => (
-        <div data-reveal><h3>{t}</h3><p>{d}</p></div>
-      ))}
+    <div class="kit__grid">
+      <div class="kit__visual" aria-hidden="true">
+        <div class="kit__stage" data-kit-stage>
+          <div class="kit__browser">
+            <div class="browser__bar"><i /><i /><i /><span class="browser__url">yourbusiness.com</span></div>
+            <div class="kit__body"><MockSite /></div>
+          </div>
+          <div class="kit__float kit__search" data-k="google">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" fill="#ea4335" /><circle cx="12" cy="10" r="2.6" fill="#fff" /></svg>
+            <div><strong>Your Roofing Co.</strong><span>Roofer · Open now</span></div>
+          </div>
+          <div class="kit__float kit__phone" data-k="phone">
+            <div class="ph">
+              <div class="ph__top"><b></b><em></em></div>
+              <div class="ph__hero"><i></i><i></i><u></u></div>
+              <div class="ph__img"></div>
+              <div class="ph__row"><s></s><s></s></div>
+            </div>
+          </div>
+          <div class="kit__float kit__note" data-k="changes">
+            <span class="kit__note-q">Can the logo be bigger?</span>
+            <span class="kit__note-a"><svg viewBox="0 0 20 20" width="14" height="14"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" /></svg>Done, round 1 of 2</span>
+          </div>
+          <div class="kit__hl"><b></b><i /><i /><i /><i /></div>
+        </div>
+      </div>
+      <ol class="kit__list">
+        {items.map(([k, tag, t, d], i) => (
+          <li class:list={['kit__item', { 'is-on': i === 0 }]} data-k={k} data-tag={tag}>
+            <button type="button" aria-pressed={i === 0 ? 'true' : 'false'}>
+              <h3>{t}</h3>
+              <p><span>{d}</span></p>
+            </button>
+          </li>
+        ))}
+      </ol>
     </div>
   </div>
 </section>
+
+<script>
+  const stage = document.querySelector<HTMLElement>('[data-kit-stage]');
+  const items = [...document.querySelectorAll<HTMLElement>('.kit__item')];
+  if (stage && items.length) {
+    const hl = stage.querySelector<HTMLElement>('.kit__hl')!;
+    const tag = hl.querySelector('b')!;
+    const targets: Record<string, string> = {
+      pages: '.kit__browser .mock__nav',
+      phone: '.kit__phone',
+      contact: '.kit__browser .mock__copy .mock__btn',
+      google: '.kit__search',
+      photos: '.kit__browser .mock__img',
+      changes: '.kit__note',
+    };
+    let current = items[0];
+    const place = () => {
+      const el = stage.querySelector<HTMLElement>(targets[current.dataset.k!]);
+      if (!el) return;
+      const s = stage.getBoundingClientRect();
+      const r = el.getBoundingClientRect();
+      const pad = 6;
+      hl.style.setProperty('--x', `${r.left - s.left - pad}px`);
+      hl.style.setProperty('--y', `${r.top - s.top - pad}px`);
+      hl.style.setProperty('--w', `${r.width + pad * 2}px`);
+      hl.style.setProperty('--h', `${r.height + pad * 2}px`);
+      tag.textContent = current.dataset.tag!;
+      stage.dataset.on = current.dataset.k;
+    };
+    const activate = (li: HTMLElement) => {
+      if (li === current) return;
+      current.classList.remove('is-on');
+      current.querySelector('button')!.setAttribute('aria-pressed', 'false');
+      current = li;
+      li.classList.add('is-on');
+      li.querySelector('button')!.setAttribute('aria-pressed', 'true');
+      place();
+    };
+    items.forEach((li) => {
+      const b = li.querySelector('button')!;
+      b.addEventListener('pointerenter', () => activate(li));
+      b.addEventListener('focus', () => activate(li));
+      b.addEventListener('click', () => activate(li));
+    });
+    // While scrolling, whichever item crosses the middle of the screen lights up.
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && activate(e.target as HTMLElement)),
+      { rootMargin: '-48% 0px -48% 0px' },
+    );
+    items.forEach((li) => io.observe(li));
+    new ResizeObserver(place).observe(stage);
+    place();
+    stage.classList.add('is-ready');
+  }
+</script>
+
+<style is:global>
+  .kit__grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+  .kit__visual { position: sticky; top: max(96px, calc(50svh - 260px)); }
+  .kit__stage { position: relative; padding: 8% 9% 11% 5%; }
+  .kit__browser {
+    border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
+    box-shadow: 0 30px 80px -34px rgba(0, 0, 0, 0.24);
+  }
+  .kit__body { aspect-ratio: 16 / 10.4; }
+  .kit__float {
+    position: absolute; z-index: 2; background: #fff; border: 1px solid var(--line);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.28);
+    transition: opacity 0.4s ease, translate 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .kit__search { left: 0; top: 0; display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 12px; border-radius: 14px; font-size: 13px; }
+  .kit__search strong { display: block; font-weight: 600; color: var(--ink); }
+  .kit__search span { color: var(--muted); font-size: 12px; }
+  .kit__phone { right: 0; bottom: 0; padding: 7px; border-radius: 22px; }
+  .kit__phone .ph { width: clamp(78px, 8vw, 104px); height: auto; aspect-ratio: 104 / 188; }
+  .kit__note { right: 2%; top: 1%; display: grid; gap: 8px; padding: 12px 14px; border-radius: 14px 14px 14px 4px; font-size: 13px; max-width: 210px; }
+  .kit__note-q { color: var(--ink); font-weight: 500; }
+  .kit__note-a { display: inline-flex; align-items: center; gap: 6px; color: #0a7a3e; font-weight: 600; font-size: 12px; }
+  /* the item not in focus steps back a little */
+  .kit__stage.is-ready .kit__float { opacity: 0.55; }
+  .kit__stage[data-on="google"] .kit__search,
+  .kit__stage[data-on="phone"] .kit__phone,
+  .kit__stage[data-on="changes"] .kit__note { opacity: 1; translate: 0 -6px; }
+
+  .kit__hl {
+    position: absolute; z-index: 3; left: 0; top: 0; pointer-events: none; opacity: 0;
+    width: var(--w, 0); height: var(--h, 0); translate: var(--x, 0) var(--y, 0);
+    border: 1.5px solid var(--accent); border-radius: 8px;
+    transition: translate 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), width 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), height 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .kit__stage.is-ready .kit__hl { opacity: 1; }
+  .kit__hl b {
+    position: absolute; left: -1.5px; top: -24px; background: var(--accent); color: #fff;
+    font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 5px 5px 5px 0; white-space: nowrap;
+  }
+  .kit__hl i { position: absolute; width: 8px; height: 8px; background: #fff; border: 1.5px solid var(--accent); }
+  .kit__hl i:nth-of-type(1) { left: -5px; top: -5px; }
+  .kit__hl i:nth-of-type(2) { right: -5px; top: -5px; }
+  .kit__hl i:nth-of-type(3) { left: -5px; bottom: -5px; }
+  .kit__hl i:nth-of-type(4) { right: -5px; bottom: -5px; }
+
+  .kit__list { list-style: none; margin: 0; padding: 0; }
+  .kit__item { border-top: 1px solid var(--line); }
+  .kit__item:last-child { border-bottom: 1px solid var(--line); }
+  .kit__item button {
+    all: unset; box-sizing: border-box; display: block; width: 100%; cursor: pointer;
+    padding: clamp(22px, 3.2vw, 40px) 0; position: relative;
+  }
+  .kit__item button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 6px; }
+  .kit__item h3 {
+    font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
+    color: #b9b9b9; transition: color 0.35s ease, translate 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .kit__item p {
+    color: var(--muted); max-width: 40ch;
+    display: grid; grid-template-rows: 0fr; opacity: 0;
+    transition: grid-template-rows 0.45s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.35s ease;
+  }
+  .kit__item.is-on h3 { color: var(--ink); translate: 12px 0; }
+  .kit__item.is-on h3::before {
+    content: ''; position: absolute; left: -12px; top: 0.42em; width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  }
+  .kit__item h3 { position: relative; }
+  .kit__item p > span { overflow: hidden; padding-top: 10px; }
+  .kit__item.is-on p { opacity: 1; grid-template-rows: 1fr; }
+  /* desktop: items are tall enough that scrolling walks through them */
+  @media (min-width: 861px) {
+    .kit__item button { min-height: 22svh; display: flex; flex-direction: column; justify-content: center; }
+  }
+  /* phones: the drawn site stays pinned on top while the list scrolls underneath */
+  @media (max-width: 860px) {
+    .kit__grid { grid-template-columns: 1fr; gap: 0; }
+    .kit__visual { top: 56px; z-index: 2; background: var(--bg); padding-bottom: 8px; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+    .kit__stage { padding: 9% 8% 12% 3%; }
+    .kit__note { max-width: 160px; font-size: 11px; padding: 8px 10px; }
+    .kit__search { padding: 7px 12px 7px 9px; font-size: 11px; }
+    .kit__search span { font-size: 10px; }
+    .kit__item button { padding: 22px 0; min-height: 28svh; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kit__hl, .kit__float, .kit__item h3, .kit__item p { transition: none; }
+  }
+</style>

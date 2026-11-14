@@ -269,7 +269,13 @@ function hero(dots) {
     .to(q('.cursor, .approve, .days'), { autoAlpha: 0, duration: 0.04 }, out)
     .to(q('.hero__title'), { autoAlpha: 0, y: () => -window.innerHeight * 0.6, duration: 0.07, ease: 'power2.in' }, out)
     .to(q('.hero__dots'), { opacity: 0, duration: 0.12 }, out + 0.04)
+    // Before diving, drop the GPU-layer hints and 3D so the browser repaints the
+    // site at its real zoomed size (sharp text) instead of stretching a small bitmap.
+    .set(stage, { perspective: 'none' }, out)
+    .set(zoom, { willChange: 'auto', transformStyle: 'flat' }, out)
+    .set(q('.browser'), { willChange: 'auto', rotationX: 0, rotationY: 0, force3D: false }, out)
     .to(zoom, {
+      force3D: false,
       scale: () => (isPhone() ? 26 : 16),
       x: () => (0.5 - focus()[0]) * stage.offsetWidth,
       y: () => window.innerHeight * 0.5 - (stage.offsetTop + focus()[1] * stage.offsetHeight),
@@ -291,7 +297,7 @@ function hero(dots) {
       const nx = e.clientX / window.innerWidth - 0.5;
       const ny = e.clientY / window.innerHeight - 0.5;
       movers.forEach((m) => { m.x(-nx * 46 * m.depth); m.y(-ny * 34 * m.depth); });
-      tiltX(nx * 5);
+      if (tl.time() < out) tiltX(nx * 5);
     });
   }
 }
@@ -386,25 +392,42 @@ function slider() {
 
 /* Steps: lock and slide sideways on wide screens; a drawn line on small ones. */
 function processScroll() {
+  const bars = gsap.utils.toArray('.plan__bar i');
+  const meter = document.querySelector('[data-meter]');
+  const meterBar = document.querySelector('.art__meter div i');
+  const built = { v: 0 };
+  const showBuilt = () => {
+    if (meter) meter.textContent = `${Math.round(built.v)}%`;
+    if (meterBar) meterBar.style.transform = `scaleX(${built.v / 100})`;
+  };
+  // The plan fills day by day: one day, then three, then the last one.
+  const fillPlan = (tl, at, span) => {
+    tl.fromTo(bars[0], { scaleX: 0 }, { scaleX: 1, duration: span * 0.2 }, at)
+      .fromTo(bars[1], { scaleX: 0 }, { scaleX: 1, duration: span * 0.6 }, at + span * 0.2)
+      .fromTo(built, { v: 0 }, { v: 100, duration: span * 0.6, onUpdate: showBuilt }, at + span * 0.2)
+      .fromTo(bars[2], { scaleX: 0 }, { scaleX: 1, duration: span * 0.2 }, at + span * 0.8);
+  };
   const m = gsap.matchMedia();
   m.add('(min-width: 861px)', () => {
     const steps = document.querySelector('.steps');
     const wrap = steps.parentElement;
+    const rows = document.querySelector('.plan__rows');
     const dist = () => Math.max(0, steps.scrollWidth - wrap.clientWidth);
-    gsap.timeline({
+    const tl = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: { trigger: '.process', start: 'top top', end: 'bottom bottom', scrub: 0.7, invalidateOnRefresh: true },
     })
       .to(steps, { x: () => -dist(), duration: 1 }, 0.06)
-      .fromTo('.steps__line i', { scaleX: 0 }, { scaleX: 1, duration: 1 }, 0.06)
-      .fromTo('.step__n', { xPercent: 35 }, { xPercent: 0, duration: 1 }, 0.06)
+      .fromTo('.plan__now', { x: 0 }, { x: () => rows.offsetWidth - 2, duration: 1 }, 0.06)
       .to({}, { duration: 0.06 });
+    fillPlan(tl, 0.06, 1);
   });
   m.add('(max-width: 860px)', () => {
-    gsap.fromTo('.steps__line i', { scaleX: 0 }, {
-      scaleX: 1, ease: 'none',
-      scrollTrigger: { trigger: '.steps__line', start: 'top 80%', end: 'top 30%', scrub: 0.6 },
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: '.plan', start: 'top 85%', end: 'top 35%', scrub: 0.6 },
     });
+    fillPlan(tl, 0, 1);
     gsap.from('.step', { y: 60, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.12, scrollTrigger: { trigger: '.steps', start: 'top 82%', once: true } });
   });
 }
