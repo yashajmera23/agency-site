@@ -1,0 +1,28 @@
+---
+const steps = [
+  ['Day 1', 'You tell us about your business', 'A short form and a 20-minute call. Send your logo, photos and anything you like.'],
+  ['Days 2 to 4', 'We design and build it', 'You get a private link to watch it come together and ask for changes.'],
+  ['Day 5', 'You approve, we hand it over', 'The site goes live on your own domain. You get a short video showing how to change text and photos.'],
+];
+---
+<section class="section process" id="process">
+  <div class="process__pin">
+    <div class="wrap">
+      <div class="head">
+        <span class="label">How it works</span>
+        <h2 class="h2" data-reveal>Three steps. Five days.</h2>
+      </div>
+      <div class="steps__line" aria-hidden="true"><i></i></div>
+      <div class="steps">
+        {steps.map(([day, t, d], i) => (
+          <div class="step">
+            <span class="step__day">{day}</span>
+            <span class="step__n">{i + 1}</span>
+            <h3>{t}</h3>
+            <p>{d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

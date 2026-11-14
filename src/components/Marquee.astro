@@ -1,0 +1,17 @@
+---
+const rows = [
+  ['Roofers', 'Plumbers', 'Electricians', 'Heating & cooling', 'Landscapers', 'Builders'],
+  ['Skin clinics', 'Salons', 'Dentists', 'Cleaners', 'Painters', 'Locksmiths'],
+];
+---
+<div class="marquee" aria-label={`We build websites for: ${rows.flat().join(', ')}`}>
+  {rows.map((trades, r) => (
+    <div class="marquee__track" data-dir={r === 0 ? -1 : 1} aria-hidden="true">
+      {[0, 1].map(() => (
+        <div class="marquee__set">
+          {trades.map((t) => <span>{t}<i>✦</i></span>)}
+        </div>
+      ))}
+    </div>
+  ))}
+</div>

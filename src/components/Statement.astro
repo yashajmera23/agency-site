@@ -1,0 +1,11 @@
+---
+import { site } from '../site.js';
+const words = `We build your business a great website in ${site.days} days, for one fixed price, then hand it over.`.split(' ');
+const hl = (w) => /^\d/.test(w) || w === 'days,';
+---
+<section class="section statement" aria-label="What we do">
+  <p data-words>
+    {words.map((w) => <span class:list={['w', { hl: hl(w) }]}>{w} </span>)}
+  </p>
+  <p class="statement__sub" data-reveal>No monthly fees. No contract. No headache. You run your business, we get you online.</p>
+</section>

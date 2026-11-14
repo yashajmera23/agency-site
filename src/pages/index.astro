@@ -1,0 +1,64 @@
+---
+import '../styles/global.css';
+import { site } from '../site.js';
+import Hero from '../components/Hero.astro';
+import Statement from '../components/Statement.astro';
+import Marquee from '../components/Marquee.astro';
+import Problem from '../components/Problem.astro';
+import Included from '../components/Included.astro';
+import Process from '../components/Process.astro';
+import Work from '../components/Work.astro';
+import Price from '../components/Price.astro';
+import Fit from '../components/Fit.astro';
+import Faq from '../components/Faq.astro';
+import Cta from '../components/Cta.astro';
+const title = `${site.name} — A new website for your business in ${site.days} days`;
+const description = `We build local businesses a great website in ${site.days} days for one fixed price, then hand it over. No monthly fees, no contract.`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Turn the scroll scene on before first paint, only if motion is allowed. -->
+    <script is:inline>
+      // Add ?motion=off to the address to preview the no-motion version.
+      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches && !/[?&]motion=off/.test(location.search)) {
+        document.documentElement.classList.add('motion');
+      }
+    </script>
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true"><span>Day</span><b data-loader>1</b></div>
+    <div class="progress" aria-hidden="true"><i></i></div>
+    <header class="top">
+      <a class="top__logo" href="#">{site.name}</a>
+      <a class="btn" href="#review">Free website review</a>
+    </header>
+    <main>
+      <Hero />
+      <div class="band">
+        <Statement />
+        <Marquee />
+      </div>
+      <div class="sheet">
+      <Problem />
+      <Included />
+      <Process />
+      <Work />
+      <Price />
+      <Fit />
+      <Faq />
+      </div>
+      <Cta />
+    </main>
+    <script>
+      import '../scripts/scroll.js';
+    </script>
+  </body>
+</html>

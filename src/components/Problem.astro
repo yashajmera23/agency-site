@@ -1,0 +1,53 @@
+---
+import MockSite from './MockSite.astro';
+const points = [
+  ['It looks old.', 'People decide in a few seconds if they trust a business. An old site says "maybe closed".'],
+  ['It is hard to use on a phone.', 'Most people search on their phone. If they have to pinch and zoom, they go back.'],
+  ['People leave before they call.', 'If the phone number and the "get a quote" button are hard to find, the job goes to someone else.'],
+];
+---
+<section class="section" id="problem">
+  <div class="wrap">
+    <div class="head">
+      <span class="label">The problem</span>
+      <h2 class="h2" data-reveal>Your work is good. Your website doesn't show it.</h2>
+    </div>
+    <div class="problem__grid">
+      <ol class="points">
+        {points.map(([t, d], i) => (
+          <li data-reveal>
+            <span class="n">0{i + 1}</span>
+            <div><b>{t}</b><p>{d}</p></div>
+          </li>
+        ))}
+      </ol>
+      <div data-reveal>
+        <div class="ba">
+          <div class="ba__layer">
+            <div class="old">
+              <div class="old__bar">★ WELCOME TO OUR WEB SITE ★</div>
+              <div class="old__nav"><span>Home</span><span>About Us</span><span>Services</span><span>Links</span><span>Guestbook</span></div>
+              <div class="old__body">
+                <div class="old__box"><b>Menu</b>Home<br />Roofing<br />Guttering<br />Contact<br />Site map</div>
+                <div class="old__box">
+                  <b>About our company</b>
+                  We have been established for many years and pride ourselves on offering a wide range of services to
+                  domestic and commercial customers throughout the area. Please browse our site for more information.
+                  <p class="old__blink">CALL NOW FOR SPECIAL OFFER!!!</p>
+                  Best viewed on a desktop computer.
+                </div>
+                <div class="old__box"><div class="old__img"></div>Photo 1 of 37</div>
+              </div>
+            </div>
+          </div>
+          <div class="ba__layer ba__after"><MockSite /></div>
+          <span class="ba__tag ba__tag--l">Before</span>
+          <span class="ba__tag ba__tag--r">After</span>
+          <div class="ba__line"></div>
+          <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the old website with the new one" />
+        </div>
+        <p class="ba__note">Scroll or drag to compare. Both are example designs we drew, not a real client.</p>
+      </div>
+    </div>
+  </div>
+</section>

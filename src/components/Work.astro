@@ -1,0 +1,33 @@
+---
+import MockSite from './MockSite.astro';
+---
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="head">
+      <span class="label">Our work</span>
+      <h2 class="h2" data-reveal>Two examples of what we build.</h2>
+      <p class="lead" data-reveal>These are concept projects: designs we made for invented businesses to show our standard. We are a new studio and we won't pretend otherwise.</p>
+    </div>
+    <div class="work">
+      <article data-reveal>
+        <div class="work__thumb"><MockSite /></div>
+        <div class="work__meta"><h3>A roofing company</h3><span class="chip">Concept project</span></div>
+        <p>Built to turn a Google search into a phone call. Full site coming soon.</p>
+      </article>
+      <article data-reveal>
+        <div class="work__thumb">
+          <div class="clinic">
+            <div class="clinic__copy">
+              <span class="clinic__k">Skin clinic</span>
+              <span class="clinic__h">Care that shows.</span>
+              <span class="clinic__b">Book a visit</span>
+            </div>
+            <div class="clinic__img"></div>
+          </div>
+        </div>
+        <div class="work__meta"><h3>An aesthetic clinic</h3><span class="chip">Concept project</span></div>
+        <p>Calm, premium and simple to book from. Full site coming soon.</p>
+      </article>
+    </div>
+  </div>
+</section>
