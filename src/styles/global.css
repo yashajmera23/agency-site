@@ -408,3 +408,26 @@ html { scrollbar-color: #bdbdbd transparent; caret-color: var(--accent); }
   .compare td::before { content: attr(data-col); color: var(--muted); font-weight: 500; font-size: var(--t-small); padding-top: 2px; }
   .compare td.us { padding: 10px 12px; margin: 4px -12px 0; border-radius: 12px; }
 }
+
+/* phones: less to read. Desktop keeps the full text. */
+@media (max-width: 640px) {
+  .points li { padding: 18px 0; }
+  .points p { display: none; }
+  .about__copy p.about__why { display: none; }
+  .about__copy .btn { margin-top: 28px; }
+  .step p { font-size: var(--t-small); }
+  .work__intro p { font-size: var(--t-small); }
+  /* the three screenshots become a swipe row */
+  .project .work__row {
+    display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 8px;
+    scroll-padding-inline: var(--gutter); scrollbar-width: none;
+  }
+  .project .work__row::-webkit-scrollbar { display: none; }
+  .project .work__shot { flex: 0 0 78%; scroll-snap-align: start; }
+  .work__shot figcaption span { display: none; }
+  .compare tbody tr { padding: 14px 0 6px; }
+  .compare tbody th { padding-bottom: 6px; }
+  .compare td:not(.us) { font-size: var(--t-small); padding: 3px 0; grid-template-columns: 8.5em 1fr; }
+  .compare td.us { grid-template-columns: 8.5em 1fr; }
+}

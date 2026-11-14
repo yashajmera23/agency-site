@@ -64,7 +64,7 @@ const projects = [
           {pr.shots.map(([img, t, d, alt]) => (
             <figure class="work__shot" data-reveal>
               <div class="work__frame"><Image src={img} alt={alt} widths={[600, 1200]} sizes="(max-width: 860px) 92vw, 400px" loading="lazy" /></div>
-              <figcaption><b>{t}</b>{d}</figcaption>
+              <figcaption><b>{t}</b><span>{d}</span></figcaption>
             </figure>
           ))}
         </div>
