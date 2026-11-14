@@ -9,14 +9,12 @@ const points = [
 <section class="section" id="problem">
   <div class="wrap">
     <div class="head">
-      <span class="label">The problem</span>
       <h2 class="h2" data-reveal>Your work is good. Your website doesn't show it.</h2>
     </div>
     <div class="problem__grid">
       <ol class="points">
         {points.map(([t, d], i) => (
           <li data-reveal>
-            <span class="n">0{i + 1}</span>
             <div><b>{t}</b><p>{d}</p></div>
           </li>
         ))}
@@ -46,7 +44,7 @@ const points = [
           <div class="ba__line"></div>
           <input type="range" min="0" max="100" value="50" aria-label="Drag to compare the old website with the new one" />
         </div>
-        <p class="ba__note">Scroll or drag to compare. Both are example designs we drew, not a real client.</p>
+        <p class="ba__note">Scroll or drag to compare. We drew both as examples. Neither is a real client.</p>
       </div>
     </div>
   </div>

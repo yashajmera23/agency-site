@@ -1,0 +1,33 @@
+---
+import { site } from '../site.js';
+const cols = ['Build it yourself', 'Big agency', 'Us'];
+const rows = [
+  ['Cost', 'A monthly plan, plus your time', 'Often $2,500 to $25,000', `${site.price}, paid once`],
+  ['Time to go live', 'However many evenings it takes', 'Usually 4 to 10 weeks', `${site.days} days`],
+  ['Who does the work', 'You', 'A team, through an account manager', 'The designer you talk to'],
+  ['Monthly fee', 'Yes, for as long as the site is up', 'Often, for a care plan', 'None'],
+  ['Who owns it', 'Tied to the builder you picked', 'Depends on the contract', 'You, all of it'],
+];
+---
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="head">
+      <h2 class="h2">Your three options.</h2>
+      <p class="lead" data-reveal>You can build a site yourself, hire an agency, or work with a small studio like us. This is how they differ.</p>
+    </div>
+    <table class="compare" data-reveal>
+      <thead>
+        <tr><td></td>{cols.map((c, i) => <th scope="col" class:list={{ us: i === 2 }}>{c}</th>)}</tr>
+      </thead>
+      <tbody>
+        {rows.map(([label, ...cells]) => (
+          <tr>
+            <th scope="row">{label}</th>
+            {cells.map((c, i) => <td class:list={{ us: i === 2 }} data-col={cols[i]}>{c}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="compare__note">Agency prices and timelines come from published packages of agencies serving small businesses in 2026.</p>
+  </div>
+</section>

@@ -1,6 +1,7 @@
 ---
 import MockSite from './MockSite.astro';
 import { site } from '../site.js';
+import Arrow from './Arrow.astro';
 const cursors = [
   { id: 'design', label: 'Design' },
   { id: 'build', label: 'Build' },
@@ -70,12 +71,12 @@ const chars = `${site.days} days.`.split('');
 
       <div class="approve" aria-hidden="true">
         <span class="approve__a">Approve</span>
-        <span class="approve__b">Approved ✓</span>
+        <span class="approve__b">Approved <svg viewBox="0 0 20 20" width="1em" height="1em" aria-hidden="true"><path d="M4.5 10.5l3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </div>
     </div>
 
     <div class="hero__flood" aria-hidden="true"></div>
-    <p class="hero__hint" aria-hidden="true">Scroll to watch it get built ↓</p>
+    <p class="hero__hint" aria-hidden="true">Scroll to watch it get built <Arrow dir="down" /></p>
     <div class="days" aria-hidden="true">
       <span>Day <b data-day>1</b> of {site.days}</span>
       <div class="days__bar"><i></i></div>

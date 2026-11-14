@@ -56,6 +56,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   slider();
   processScroll();
   work();
+  about();
   countUp();
   cta();
   buttons();
@@ -494,6 +495,20 @@ function cards() {
       c.style.setProperty('--my', `${e.clientY - r.top}px`);
     });
   });
+}
+
+/* The photo is drawn in like the hero: an empty frame fills, then the colour comes in. */
+function about() {
+  const fig = document.querySelector('[data-photo]');
+  if (!fig) return;
+  const frame = fig.querySelector('.about__frame');
+  const img = fig.querySelector('img');
+  const tl = gsap.timeline({
+    scrollTrigger: { trigger: fig, start: 'top 85%', end: 'center 45%', scrub: 0.8 },
+  });
+  tl.fromTo(frame, { clipPath: 'inset(100% 0% 0% 0% round 20px)' }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', ease: 'power3.out', duration: 1 })
+    .fromTo(img, { scale: 1.3, filter: 'grayscale(1) contrast(1.1)' }, { scale: 1, filter: 'grayscale(0) contrast(1) saturate(0.8)', ease: 'none', duration: 1.4 }, 0)
+    .from(fig.querySelector('figcaption'), { autoAlpha: 0, y: 12, duration: 0.4 }, 0.8);
 }
 
 /* Custom pointer for mouse users. */

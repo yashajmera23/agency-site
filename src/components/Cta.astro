@@ -1,5 +1,6 @@
 ---
 import { site } from '../site.js';
+import Arrow from './Arrow.astro';
 const mail = `mailto:${site.email}?subject=${encodeURIComponent('Free review of my website')}&body=${encodeURIComponent('My website: ')}`;
 const letters = site.name.split('');
 ---
@@ -7,14 +8,13 @@ const letters = site.name.split('');
   <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
     <circle cx="100" cy="100" r="100" />
     <defs><path id="badge-circle" d="M100,100 m-74,0 a74,74 0 1,1 148,0 a74,74 0 1,1 -148,0" /></defs>
-    <g class="badge__spin"><text><textPath href="#badge-circle" textLength="455">FREE WEBSITE REVIEW ✦ 2 MINUTES ✦ NO CATCH ✦</textPath></text></g>
+    <g class="badge__spin"><text><textPath href="#badge-circle" textLength="455">FREE WEBSITE REVIEW · 2 MINUTES · NO CATCH ·</textPath></text></g>
     <path class="badge__arrow" d="M100 72v52m0 0l-20-20m20 20l20-20" />
   </svg>
   <div class="wrap">
-    <span class="label">Free, no catch</span>
     <h2 class="h2" data-reveal>Send us your website.</h2>
     <p class="lead" data-reveal>We'll send back a 2-minute video showing what we would fix. Keep it, even if you never talk to us again.</p>
-    <a class="btn btn--lg" href={mail} data-reveal><span>Get my free review →</span></a>
+    <a class="btn btn--lg" href={mail} data-reveal><span>Get my free review</span><Arrow /></a>
     <div class="mega" aria-hidden="true" style={`--n:${letters.length}`}>
       {letters.map((l) => (l === ' ' ? <span class="mega__sp" /> : <span>{l}</span>))}
     </div>

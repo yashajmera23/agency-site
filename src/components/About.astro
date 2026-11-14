@@ -1,0 +1,34 @@
+---
+import { Image } from 'astro:assets';
+import photo from '../assets/yash.webp';
+import Arrow from './Arrow.astro';
+---
+<section class="section about" id="about">
+  <div class="wrap about__grid">
+    <figure class="about__photo" data-photo>
+      <div class="about__frame">
+        <Image
+          src={photo}
+          alt="Yash, the designer behind the studio, smiling in a black shirt"
+          widths={[420, 720, 1000]}
+          sizes="(max-width: 860px) 92vw, 520px"
+          loading="lazy"
+        />
+      </div>
+      <figcaption>Yash, founder and designer</figcaption>
+    </figure>
+    <div class="about__copy">
+      <h2 class="h2">The person who builds your site.</h2>
+      <p class="about__lead" data-reveal>
+        We're a small studio run by Yash, a UX designer with more than 3 years of experience designing websites and apps.
+      </p>
+      <p data-reveal>
+        We started it because good local businesses lose customers to websites that let them down, and fixing that shouldn't take months or cost thousands.
+      </p>
+      <p data-reveal>
+        You talk to Yash from your first email to the day your site goes live. Nobody passes your project along. We're based in India and work by email and video call, so it doesn't matter where you are.
+      </p>
+      <a class="btn" href="#review" data-reveal><span>Send us your website</span><Arrow /></a>
+    </div>
+  </div>
+</section>

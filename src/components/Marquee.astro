@@ -9,7 +9,7 @@ const rows = [
     <div class="marquee__track" data-dir={r === 0 ? -1 : 1} aria-hidden="true">
       {[0, 1].map(() => (
         <div class="marquee__set">
-          {trades.map((t) => <span>{t}<i>✦</i></span>)}
+          {trades.map((t) => <span>{t}<i aria-hidden="true"></i></span>)}
         </div>
       ))}
     </div>
