@@ -301,7 +301,7 @@ a { color: inherit; }
 /* steps: on wide screens they lock and slide sideways */
 .process { overflow-x: clip; }
 @media (min-width: 861px) {
-  .motion .process { height: 320vh; padding: 0; }
+  .motion .process { height: 420vh; padding: 0; }
   .motion .process__pin {
     position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden;
     display: flex; flex-direction: column; justify-content: center; padding: 0 var(--gutter);

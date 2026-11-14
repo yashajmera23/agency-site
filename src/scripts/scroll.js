@@ -400,12 +400,14 @@ function processScroll() {
     if (meter) meter.textContent = `${Math.round(built.v)}%`;
     if (meterBar) meterBar.style.transform = `scaleX(${built.v / 100})`;
   };
-  // The plan fills day by day: one day, then three, then the last one.
+  // The plan fills day by day: brief, research, three days of building, go live.
+  const fill = (el, dur, at, tl) => tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: dur }, at);
   const fillPlan = (tl, at, span) => {
-    tl.fromTo(bars[0], { scaleX: 0 }, { scaleX: 1, duration: span * 0.2 }, at)
-      .fromTo(bars[1], { scaleX: 0 }, { scaleX: 1, duration: span * 0.6 }, at + span * 0.2)
-      .fromTo(built, { v: 0 }, { v: 100, duration: span * 0.6, onUpdate: showBuilt }, at + span * 0.2)
-      .fromTo(bars[2], { scaleX: 0 }, { scaleX: 1, duration: span * 0.2 }, at + span * 0.8);
+    fill(bars[0], span * 0.2, at, tl);
+    fill(bars[1], span * 0.2, at + span * 0.2, tl);
+    fill(bars[2], span * 0.4, at + span * 0.4, tl);
+    tl.fromTo(built, { v: 0 }, { v: 100, duration: span * 0.4, onUpdate: showBuilt }, at + span * 0.4);
+    fill(bars[3], span * 0.2, at + span * 0.8, tl);
   };
   const m = gsap.matchMedia();
   m.add('(min-width: 861px)', () => {
