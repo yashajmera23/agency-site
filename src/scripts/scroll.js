@@ -438,22 +438,18 @@ function processScroll() {
 
 /* Work cards: drift at different speeds and tilt toward the mouse. */
 function work() {
-  const cards = gsap.utils.toArray('.work article');
-  const m = gsap.matchMedia();
-  m.add('(min-width: 861px)', () => {
-    if (cards[1]) gsap.fromTo(cards[1], { y: 110 }, { y: -50, ease: 'none', scrollTrigger: { trigger: '.work', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
+  const feature = document.querySelector('[data-work-feature]');
+  if (!feature) return;
+  const browser = feature.querySelector('.work__browser');
+  const phone = feature.querySelector('.work__phone');
+  // The big screenshot opens up like a window as it scrolls in; the phone rides up past it.
+  gsap.fromTo(browser, { clipPath: 'inset(12% 8% 12% 8% round 16px)', scale: 0.94 }, {
+    clipPath: 'inset(0% 0% 0% 0% round 16px)', scale: 1, ease: 'none',
+    scrollTrigger: { trigger: feature, start: 'top 90%', end: 'top 30%', scrub: 0.6 },
   });
-  if (!finePointer()) return;
-  cards.forEach((card) => {
-    const thumb = card.querySelector('.work__thumb');
-    const rx = gsap.quickTo(thumb, 'rotationX', { duration: 0.5, ease: 'power3' });
-    const ry = gsap.quickTo(thumb, 'rotationY', { duration: 0.5, ease: 'power3' });
-    card.addEventListener('pointermove', (e) => {
-      const r = thumb.getBoundingClientRect();
-      ry(((e.clientX - r.left) / r.width - 0.5) * 12);
-      rx(-((e.clientY - r.top) / r.height - 0.5) * 10);
-    });
-    card.addEventListener('pointerleave', () => { rx(0); ry(0); });
+  gsap.fromTo(phone, { y: 140, rotation: 6 }, {
+    y: -30, rotation: 0, ease: 'none',
+    scrollTrigger: { trigger: feature, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
   });
 }
 

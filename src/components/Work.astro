@@ -1,32 +1,78 @@
 ---
-import MockSite from './MockSite.astro';
+import { Image } from 'astro:assets';
+import home from '../assets/work/petals-home.webp';
+import mobile from '../assets/work/petals-mobile.webp';
+import services from '../assets/work/petals-services.webp';
+import industries from '../assets/work/petals-industries.webp';
+import about from '../assets/work/petals-about.webp';
+const shots = [
+  [services, 'Services', 'Eight services, each with its own page and a real photo.', 'The services grid of the PETALS website, eight cards with site photos'],
+  [industries, 'Industries', 'Photo cards that show who they work for at a glance.', 'The industries section of the PETALS website, with photo cards for roads, rail and energy'],
+  [about, 'About', 'A dark section that tells their story through the letters of their name.', 'The dark about section of the PETALS website'],
+];
 ---
 <section class="section" id="work">
   <div class="wrap">
-    <div class="head">
-      <h2 class="h2" data-reveal>Two examples of what we build.</h2>
-      <p class="lead" data-reveal>We're a new studio, so we designed these for made-up businesses to show the standard of our work.</p>
+    <div class="head work__head">
+      <h2 class="h2">Recent work.</h2>
+      <div class="work__intro" data-reveal>
+        <h3>PETALS Engineering Consultancy</h3>
+        <p>A full website for an engineering firm: home, eight service pages, industries, about, careers and contact. It explains complex technical work in a way anyone can follow.</p>
+        <ul class="work__tags"><li>Website design</li><li>16 pages</li><li>Desktop and phone</li></ul>
+      </div>
     </div>
-    <div class="work">
-      <article data-reveal>
-        <div class="work__thumb"><MockSite /></div>
-        <div class="work__meta"><h3>A roofing company</h3><span class="chip">Concept project</span></div>
-        <p>Built to turn a Google search into a phone call. Full site coming soon.</p>
-      </article>
-      <article data-reveal>
-        <div class="work__thumb">
-          <div class="clinic">
-            <div class="clinic__copy">
-              <span class="clinic__k">Skin clinic</span>
-              <span class="clinic__h">Care that shows.</span>
-              <span class="clinic__b">Book a visit</span>
-            </div>
-            <div class="clinic__img"></div>
-          </div>
-        </div>
-        <div class="work__meta"><h3>An aesthetic clinic</h3><span class="chip">Concept project</span></div>
-        <p>Calm, and easy to book a visit from. Full site coming soon.</p>
-      </article>
+
+    <div class="work__feature" data-work-feature>
+      <div class="work__browser">
+        <div class="browser__bar"><i /><i /><i /></div>
+        <Image src={home} alt="Home page of the PETALS Engineering Consultancy website, with a layered ground drawing next to the headline" widths={[800, 1200, 1800]} sizes="(max-width: 860px) 92vw, 1100px" loading="lazy" />
+      </div>
+      <div class="work__phone">
+        <Image src={mobile} alt="The same home page on a phone" widths={[300, 600]} sizes="200px" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="work__row">
+      {shots.map(([img, t, d, alt]) => (
+        <figure class="work__shot" data-reveal>
+          <div class="work__frame"><Image src={img} alt={alt} widths={[600, 1200]} sizes="(max-width: 860px) 92vw, 400px" loading="lazy" /></div>
+          <figcaption><b>{t}</b>{d}</figcaption>
+        </figure>
+      ))}
     </div>
   </div>
 </section>
+
+<style is:global>
+  .work__head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px 48px; align-items: end; }
+  .work__intro h3 { font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
+  .work__intro p { color: var(--muted); margin-top: 12px; max-width: 46ch; }
+  .work__tags { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .work__tags li { font-size: 12px; font-weight: 600; border: 1px solid var(--line); padding: 5px 11px; border-radius: 99px; color: var(--muted); }
+
+  .work__feature { position: relative; padding-right: clamp(40px, 9vw, 140px); }
+  .work__browser {
+    border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: #fff;
+    box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.3);
+  }
+  .work__browser img, .work__phone img, .work__frame img { display: block; width: 100%; height: auto; }
+  .work__phone {
+    position: absolute; right: 0; bottom: -8%; width: clamp(110px, 17%, 210px);
+    border-radius: clamp(18px, 2.4vw, 30px); overflow: hidden; background: #fff;
+    border: clamp(4px, 0.6vw, 7px) solid var(--ink);
+    box-shadow: 0 30px 60px -24px rgba(0, 0, 0, 0.45);
+  }
+  .work__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 2vw, 24px); margin-top: clamp(64px, 9vw, 120px); }
+  .work__shot { margin: 0; }
+  .work__frame { border-radius: 12px; overflow: hidden; border: 1px solid var(--line); aspect-ratio: 16 / 10; }
+  .work__frame img { height: 100%; object-fit: cover; object-position: top; transition: scale 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .work__shot:hover .work__frame img { scale: 1.04; }
+  .work__shot figcaption { margin-top: 12px; color: var(--muted); font-size: var(--t-small); max-width: 36ch; }
+  .work__shot figcaption b { display: block; color: var(--ink); font-size: var(--t-body); font-weight: 600; margin-bottom: 2px; }
+  @media (max-width: 860px) {
+    .work__head { grid-template-columns: 1fr; }
+    .work__feature { padding-right: 18%; }
+    .work__phone { width: 30%; bottom: -10%; }
+    .work__row { grid-template-columns: 1fr; }
+  }
+</style>
