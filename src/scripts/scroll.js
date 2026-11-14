@@ -83,9 +83,10 @@ function intro(lenis) {
   }
   const n = loader.querySelector('[data-loader]');
   const o = { v: 1 };
+  const total = Number(document.querySelector('.days')?.dataset.total) || 7;
   lenis.stop();
   gsap.timeline({ onComplete: () => { loader.remove(); lenis.start(); } })
-    .to(o, { v: 5, duration: 1, ease: 'power1.inOut', onUpdate: () => { n.textContent = Math.round(o.v); } })
+    .to(o, { v: total, duration: 1.1, ease: 'power1.inOut', onUpdate: () => { n.textContent = Math.round(o.v); } })
     .to(loader, { yPercent: -100, duration: 0.9, ease: 'power4.inOut' }, '+=0.15')
     .to(chars, { y: 0, duration: 1.1, ease: 'power4.out', stagger: 0.045 }, '-=0.45')
     .from('.hero__eyebrow, .hero__hint', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.15, clearProps: 'transform' }, '-=0.7')
@@ -160,7 +161,7 @@ function hero(dots) {
   const day = q('[data-day]')[0];
   const stage = q('.stage')[0];
   const zoom = q('.zoom')[0];
-  const totalDays = 5;
+  const totalDays = Number(q('.days')[0].dataset.total) || 7;
 
   gsap.set(q('.hero__title'), { yPercent: -50, y: 0 });
   gsap.set(stage, { xPercent: -50, x: 0 });
@@ -400,14 +401,15 @@ function processScroll() {
     if (meter) meter.textContent = `${Math.round(built.v)}%`;
     if (meterBar) meterBar.style.transform = `scaleX(${built.v / 100})`;
   };
-  // The plan fills day by day: brief, research, three days of building, go live.
+  // The plan fills day by day: brief, research, four days of building, go live.
   const fill = (el, dur, at, tl) => tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: dur }, at);
   const fillPlan = (tl, at, span) => {
-    fill(bars[0], span * 0.2, at, tl);
-    fill(bars[1], span * 0.2, at + span * 0.2, tl);
-    fill(bars[2], span * 0.4, at + span * 0.4, tl);
-    tl.fromTo(built, { v: 0 }, { v: 100, duration: span * 0.4, onUpdate: showBuilt }, at + span * 0.4);
-    fill(bars[3], span * 0.2, at + span * 0.8, tl);
+    const d = span / 7;
+    fill(bars[0], d, at, tl);
+    fill(bars[1], d, at + d, tl);
+    fill(bars[2], d * 4, at + d * 2, tl);
+    tl.fromTo(built, { v: 0 }, { v: 100, duration: d * 4, onUpdate: showBuilt }, at + d * 2);
+    fill(bars[3], d, at + d * 6, tl);
   };
   const m = gsap.matchMedia();
   m.add('(min-width: 861px)', () => {

@@ -4,5 +4,5 @@ export const site = {
   name: 'Studio Name',          // TODO: agency name
   email: 'hello@example.com',   // TODO: real email address
   price: '$800',                // TODO: confirm the price shown on the site
-  days: 5,
+  days: 7,
 };

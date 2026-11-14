@@ -2,25 +2,25 @@
 const steps = [
   ['brief', 'Day 1', 'You tell us about your business', 'A short form and a 20-minute call. Send your logo, photos and anything you like.'],
   ['research', 'Day 2', 'We study your market', 'We check your top local competitors, map how a customer goes from a Google search to calling you, and plan your pages around that.'],
-  ['build', 'Days 3 to 4', 'We design and build it', 'You get a private link to watch it come together and ask for changes.'],
-  ['live', 'Day 5', 'You approve, we hand it over', 'The site goes live on your own domain. You get a short video showing how to change text and photos.'],
+  ['build', 'Days 3 to 6', 'We design and build it', 'You get a private link to watch it come together and ask for changes.'],
+  ['live', 'Day 7', 'You approve, we hand it over', 'The site goes live on your own domain. You get a short video showing how to change text and photos.'],
 ];
 const bars = [
   { label: 'Brief', from: 1, to: 1 },
   { label: 'Research', from: 2, to: 2 },
-  { label: 'Design and build', from: 3, to: 4 },
-  { label: 'Go live', from: 5, to: 5 },
+  { label: 'Design and build', from: 3, to: 6 },
+  { label: 'Go live', from: 7, to: 7 },
 ];
 ---
 <section class="section process" id="process">
   <div class="process__pin">
     <div class="wrap">
       <div class="head">
-        <h2 class="h2">Four steps over five days.</h2>
+        <h2 class="h2">Four steps over one week.</h2>
       </div>
 
       <div class="plan" aria-hidden="true">
-        <div class="plan__days">{[1, 2, 3, 4, 5].map((d) => <span>Day {d}</span>)}</div>
+        <div class="plan__days">{[1, 2, 3, 4, 5, 6, 7].map((d) => <span>Day {d}</span>)}</div>
         <div class="plan__rows">
           {bars.map((b, i) => (
             <div class="plan__bar" style={`--from:${b.from};--to:${b.to}`} data-i={i}>
@@ -116,13 +116,13 @@ const bars = [
   .process .h2 { max-width: none; }
   .process .head { margin-bottom: clamp(28px, 4vw, 56px); }
 
-  /* five-day plan */
+  /* seven-day plan */
   .plan { margin-bottom: clamp(20px, 3vw, 36px); }
-  .plan__days { display: grid; grid-template-columns: repeat(5, 1fr); font-size: var(--t-small); font-weight: 600; color: var(--muted); }
+  .plan__days { display: grid; grid-template-columns: repeat(7, 1fr); font-size: var(--t-small); font-weight: 600; color: var(--muted); }
   .plan__days span { padding: 0 0 10px 10px; border-left: 1px solid var(--line); }
   .plan__rows {
-    position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px 0;
-    background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 20% 100%;
+    position: relative; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px 0;
+    background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: calc(100% / 7) 100%;
     padding: 4px 0;
   }
   .plan__bar { grid-column: var(--from) / calc(var(--to) + 1); margin: 0 6px; position: relative; height: 34px; border-radius: 99px; background: var(--wire); overflow: hidden; }
@@ -229,9 +229,15 @@ const bars = [
     .plan__now span { position: absolute; top: calc(100% + 4px); left: 0; translate: -50% 0; font-size: 11px; font-weight: 700; color: var(--accent); white-space: nowrap; }
   }
   @media (max-width: 860px) {
-    .plan__bar span { font-size: 11px; padding: 0 10px; }
-    .plan__bar { height: 28px; margin: 0 3px; }
-    .plan__bar span { line-height: 28px; }
+    /* phones: one bar per row, like a small Gantt chart; short bars keep their name beside them */
+    .plan__bar { height: 24px; margin: 0 3px; overflow: visible; }
+    .plan__bar i { overflow: hidden; }
+    .plan__bar span { font-size: 11px; padding: 0 9px; line-height: 24px; }
+    .plan__bar[data-i="0"] { grid-row: 1; } .plan__bar[data-i="1"] { grid-row: 2; }
+    .plan__bar[data-i="2"] { grid-row: 3; } .plan__bar[data-i="3"] { grid-row: 4; }
+    .plan__bar[data-i="0"] > span, .plan__bar[data-i="1"] > span { position: absolute; left: 100%; color: var(--ink); padding-left: 8px; overflow: visible; }
+    .plan__bar[data-i="3"] > span { position: absolute; right: 100%; color: var(--ink); padding-right: 8px; overflow: visible; }
+    .plan__bar[data-i="0"] i span, .plan__bar[data-i="1"] i span, .plan__bar[data-i="3"] i span { visibility: hidden; }
     .plan__days span { padding-left: 6px; font-size: 11px; }
     .step__art { min-height: 200px; margin-bottom: 18px; }
   }
