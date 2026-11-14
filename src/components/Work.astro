@@ -17,8 +17,8 @@ const shots = [
       <h2 class="h2">Recent work.</h2>
       <div class="work__intro" data-reveal>
         <h3>PETALS Engineering Consultancy</h3>
-        <p>A full website for an engineering firm: home, eight service pages, industries, about, careers and contact. It explains complex technical work in a way anyone can follow.</p>
-        <ul class="work__tags"><li>Website design</li><li>16 pages</li><li>Desktop and phone</li></ul>
+        <p>A full website for an engineering consultancy we worked with: home, eight service pages, industries, about, careers and contact. It explains complex technical work in a way anyone can follow.</p>
+        <ul class="work__tags"><li class="is-client">Client project</li><li>Website design</li><li>16 pages</li><li>Desktop and phone</li></ul>
       </div>
     </div>
 
@@ -48,6 +48,7 @@ const shots = [
   .work__intro h3 { font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; }
   .work__intro p { color: var(--muted); margin-top: 12px; max-width: 46ch; }
   .work__tags { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .work__tags li.is-client { background: var(--ink); color: #fff; border-color: var(--ink); }
   .work__tags li { font-size: 12px; font-weight: 600; border: 1px solid var(--line); padding: 5px 11px; border-radius: 99px; color: var(--muted); }
 
   .work__feature { position: relative; padding-right: clamp(40px, 9vw, 140px); }
