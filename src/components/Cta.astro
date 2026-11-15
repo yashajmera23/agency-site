@@ -15,8 +15,8 @@ const letters = site.name.split('');
     <h2 class="h2" data-reveal>Send us your website.</h2>
     <p class="lead" data-reveal>We'll send back a 2-minute video showing what we would fix. Keep it, even if you never talk to us again.</p>
     <a class="btn btn--lg" href={mail} data-reveal><span>Get my free review</span><Arrow /></a>
-    <div class="mega" aria-hidden="true" style={`--n:${letters.length}`}>
-      {letters.map((l) => (l === ' ' ? <span class="mega__sp" /> : <span>{l}</span>))}
+    <div class="mega" aria-hidden="true" style={`--n:${letters.length + 1}`}>
+      {letters.map((l) => (l === ' ' ? <span class="mega__sp" /> : <span>{l}</span>))}<span class="mega__dot">.</span>
     </div>
     <footer class="foot">
       <span>© {new Date().getFullYear()} {site.name}. A small web design studio.</span>

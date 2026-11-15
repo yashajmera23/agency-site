@@ -331,14 +331,14 @@ function hero(dots) {
 
 /* Header: out of the way while reading down, back when scrolling up. */
 function header() {
-  const top = document.querySelector('.top');
+  const tops = document.querySelectorAll('.top');
   const heroEl = document.querySelector('.hero');
   ScrollTrigger.create({
     start: 0,
     end: 'max',
     onUpdate: (self) => {
       const pastHero = self.scroll() > heroEl.offsetHeight - window.innerHeight * 1.6;
-      top.classList.toggle('top--hidden', pastHero && self.direction === 1);
+      tops.forEach((t) => t.classList.toggle('top--hidden', pastHero && self.direction === 1));
     },
   });
 }

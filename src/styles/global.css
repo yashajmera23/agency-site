@@ -25,6 +25,10 @@ a { color: inherit; }
 .top > * { pointer-events: auto; }
 .top__logo { font-weight: 700; font-size: 1.125rem; letter-spacing: -0.03em; text-decoration: none; color: #fff; }
 .top .btn, .top .btn:hover { background: #fff; color: #000; }
+.top__logo i { font-style: normal; visibility: hidden; }
+.top--dot { mix-blend-mode: normal; z-index: 51; }
+.top.top--dot > * { pointer-events: none; visibility: hidden; }
+.top--dot .top__logo i { visibility: visible; color: var(--accent); }
 
 .btn {
   display: inline-flex; align-items: center; gap: 8px;
@@ -408,3 +412,4 @@ html { scrollbar-color: #bdbdbd transparent; caret-color: var(--accent); }
   .project .work__shot { flex: 0 0 78%; scroll-snap-align: start; }
   .work__shot figcaption span { display: none; }
 }
+.mega__dot { color: var(--accent); }

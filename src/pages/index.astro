@@ -25,6 +25,7 @@ const description = `We build local businesses a great website in ${site.days} d
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -40,12 +41,17 @@ const description = `We build local businesses a great website in ${site.days} d
     <div class="loader" aria-hidden="true"><span>Day</span><b data-loader>1</b></div>
     <div class="progress" aria-hidden="true"><i></i></div>
     <header class="top">
-      <a class="top__logo" href="#">{site.name}</a>
+      <a class="top__logo" href="#" aria-label={site.name}>{site.name}<i>.</i></a>
       <nav class="top__nav" aria-label="Sections">
         <a href="#work">Work</a><a href="#process">How it works</a><a href="#price">Price</a><a href="#questions">Questions</a>
       </nav>
       <a class="btn" href="#review">Get a free review</a>
     </header>
+    <!-- The orange full stop of the logo sits on its own layer so the header's colour blending leaves it alone. -->
+    <div class="top top--dot" aria-hidden="true">
+      <span class="top__logo">{site.name}<i>.</i></span>
+      <span class="btn">Get a free review</span>
+    </div>
     <main>
       <Hero />
       <div class="band">
