@@ -4,12 +4,15 @@
 // that the hero scroll scene fades away, and the small details ([data-pop])
 // drop in one by one.
 import { Image } from 'astro:assets';
-import roof from '../assets/roof.webp';
+import photo from '../assets/mock/hero.webp';
+import repairs from '../assets/mock/repairs.webp';
+import newroof from '../assets/mock/newroof.webp';
+import gutters from '../assets/mock/gutters.webp';
 const { wire = false } = Astro.props;
 const cards = [
-  ['Roof repairs', 'Leaks and storm damage', 'M4 12l8-7 8 7M7 10v8h10v-8'],
-  ['New roofs', 'Slate, tile and flat roofs', 'M3 13l9-8 9 8M6 11v8h12v-8M10 19v-5h4v5'],
-  ['Gutters', 'Cleaned, fixed or replaced', 'M4 6h16v3a4 4 0 0 1-4 4h-2v6M12 19h4'],
+  ['Roof repairs', 'Leaks and storm damage', repairs],
+  ['New roofs', 'Slate, tile and flat roofs', newroof],
+  ['Gutters', 'Cleaned, fixed or replaced', gutters],
 ];
 const star = 'M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.5l-5.1 2.8 1.1-5.7-4.3-4 5.8-.7z';
 ---
@@ -32,10 +35,14 @@ const star = 'M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.5l-5.1 2.8 1.1-5.7-4.3-4
   </div>
 
   <div class="mock__hero">
+    <div class="mock__img">
+      <Image src={photo} alt="" widths={[640, 1000, 1600]} sizes="(max-width: 640px) 90vw, 1000px" loading={wire ? 'eager' : 'lazy'} />
+    </div>
     {wire && <i class="sk sk--panel" data-s="1" />}
+    {wire && <i class="sk sk--img" data-s="1" />}
     <div class="mock__copy">
       <span class="t mock__kicker">Local, family run{wire && <i class="sk" data-s="2" />}</span>
-      <span class="t mock__h">Roofs fixed right, the first time.{wire && <i class="sk" data-s="2" />}</span>
+      <span class="t mock__h">Roofs fixed right, <em>the first time.</em>{wire && <i class="sk" data-s="2" />}</span>
       <span class="t mock__p">Free quote in 24 hours. No call-out fee.{wire && <i class="sk" data-s="2" />}</span>
       <span class="t mock__btn">Get a free quote{wire && <i class="sk sk--pill" data-s="2" />}</span>
       <span class="mock__stars" data-pop>
@@ -43,21 +50,20 @@ const star = 'M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.5l-5.1 2.8 1.1-5.7-4.3-4
         <em>Rated 4.9 by local homeowners</em>
       </span>
     </div>
-    <div class="mock__img">
-      <Image src={roof} alt="" widths={[480, 900, 1200]} sizes="(max-width: 640px) 90vw, 480px" loading={wire ? 'eager' : 'lazy'} />
-      <span class="mock__badge" data-pop>Fully insured</span>
-      <span class="mock__tag" data-pop>
-        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="10" fill="var(--m-lime)" /><path d="M5.8 10.4l2.8 2.8 5.6-6" fill="none" stroke="var(--m-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-        <span><b>Quote sent</b>in under 24 hours</span>
-      </span>
-      {wire && <i class="sk sk--img" data-s="1" />}
-    </div>
+    <span class="mock__badge" data-pop>Fully insured</span>
+    <span class="mock__form" data-pop>
+      <b>Get your free quote</b>
+      <i>Your name</i>
+      <i>Postcode</i>
+      <u>Send my quote</u>
+      <small>We reply within 24 hours</small>
+    </span>
   </div>
 
   <div class="mock__cards">
-    {cards.map(([c, d, icon]) => (
+    {cards.map(([c, d, img]) => (
       <div class="mock__card">
-        <span class="mock__dot" data-pop><svg viewBox="0 0 24 24" aria-hidden="true"><path d={icon} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+        <span class="mock__dot" data-pop><Image src={img} alt="" widths={[160, 320]} sizes="120px" loading="lazy" /></span>
         <span class="mock__ctx">
           <span class="t mock__ct">{c}{wire && <i class="sk" data-s="2" />}</span>
           <span class="t mock__cp">{d}{wire && <i class="sk" data-s="2" />}</span>
@@ -100,56 +106,58 @@ const star = 'M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.5l-5.1 2.8 1.1-5.7-4.3-4
   .mock__btn--sm { padding: 0.9cqw 1.8cqw; font-size: 1.4cqw; background: var(--m-deep); color: #fff; box-shadow: none; }
   .mock__hero {
     position: relative;
-    margin: 0 3cqw;
+    margin: 0 1.8cqw;
     border-radius: 2cqw;
-    background:
-      radial-gradient(120% 90% at 0% 0%, rgba(216, 243, 107, 0.1), transparent 55%),
-      var(--m-deep);
-    color: #fff;
-    display: grid; grid-template-columns: 1.08fr 1fr; gap: 3cqw;
-    padding: 2.6cqw 2.6cqw 2.6cqw 3.4cqw; align-items: center;
+    background: var(--m-deep); color: #fff;
+    display: grid; align-items: center;
+    padding: 3cqw 3.6cqw;
     overflow: hidden;
   }
-  .mock__copy { position: relative; z-index: 2; display: grid; gap: 1.5cqw; justify-items: start; }
+  /* the photo fills the whole panel; a green wash keeps the words readable */
+  .mock__img { position: absolute; inset: 0; overflow: hidden; }
+  .mock__img img { width: 100%; height: 100%; object-fit: cover; object-position: 78% 40%; display: block; }
+  .mock__img::after {
+    content: ''; position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, var(--m-deep) 0%, var(--m-deep) 42%, rgba(18, 51, 43, 0.7) 53%, rgba(18, 51, 43, 0) 74%),
+      linear-gradient(0deg, rgba(18, 51, 43, 0.5), rgba(18, 51, 43, 0) 45%);
+  }
+  .mock__copy { position: relative; z-index: 2; display: grid; gap: 1.5cqw; justify-items: start; width: 52%; }
   .mock__kicker {
     font-size: 1.15cqw; color: var(--m-lime); font-weight: 600;
     border: 1px solid rgba(216, 243, 107, 0.4); border-radius: 99px; padding: 0.5cqw 1.2cqw;
   }
-  .mock__h { font-size: 4.5cqw; font-weight: 700; letter-spacing: -0.04em; line-height: 0.98; text-wrap: balance; }
-  .mock__p { font-size: 1.6cqw; opacity: 0.78; }
-  .mock__stars { display: flex; align-items: center; gap: 0.25cqw; margin-top: 0.4cqw; }
+  .mock__h { font-size: 5.2cqw; font-weight: 600; letter-spacing: -0.045em; line-height: 0.96; }
+  .mock__h em { font-style: normal; color: var(--m-lime); display: block; }
+  .mock__p { font-size: 1.6cqw; opacity: 0.8; }
+  .mock__stars { display: flex; align-items: center; gap: 0.25cqw; margin-top: 0.6cqw; }
   .mock__stars svg { width: 1.5cqw; height: 1.5cqw; fill: #f7c04a; }
-  .mock__stars em { font-style: normal; font-size: 1.2cqw; opacity: 0.8; margin-left: 0.7cqw; }
-  .mock__img {
-    position: relative; z-index: 2; border-radius: 1.4cqw; overflow: hidden; aspect-ratio: 4 / 3;
-    box-shadow: 0 2.4cqw 4cqw -2cqw rgba(0, 0, 0, 0.6);
-  }
-  .mock__img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .mock__stars em { font-style: normal; font-size: 1.2cqw; opacity: 0.85; margin-left: 0.7cqw; }
   .mock__badge {
-    position: absolute; top: 1.3cqw; right: 1.3cqw; z-index: 2;
-    background: rgba(18, 51, 43, 0.82); color: #fff; font-size: 1.1cqw; font-weight: 600;
-    padding: 0.55cqw 1.1cqw; border-radius: 99px;
+    position: absolute; top: 1.8cqw; right: 1.8cqw; z-index: 2;
+    background: rgba(18, 51, 43, 0.78); color: #fff; font-size: 1.1cqw; font-weight: 600;
+    padding: 0.6cqw 1.2cqw; border-radius: 99px;
   }
-  .mock__tag {
-    position: absolute; left: 1.3cqw; bottom: 1.3cqw; z-index: 2;
-    display: flex; align-items: center; gap: 0.9cqw;
-    background: #fff; color: var(--m-deep); border-radius: 1.2cqw; padding: 0.9cqw 1.5cqw 0.9cqw 1cqw;
-    font-size: 1.1cqw; line-height: 1.25; box-shadow: 0 1.2cqw 2.4cqw -1cqw rgba(0, 0, 0, 0.5);
+  .mock__form {
+    position: absolute; right: 2.2cqw; bottom: 2.2cqw; z-index: 2; width: 23cqw;
+    display: grid; gap: 0.8cqw; background: #fff; color: var(--m-deep);
+    border-radius: 1.6cqw; padding: 1.7cqw; box-shadow: 0 2.4cqw 4.5cqw -1.6cqw rgba(0, 0, 0, 0.55);
   }
-  .mock__tag svg { width: 2.2cqw; height: 2.2cqw; flex: none; }
-  .mock__tag b { display: block; font-size: 1.25cqw; }
-  .mock__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.6cqw; padding: 2cqw 3cqw 2.4cqw; }
+  .mock__form b { font-size: 1.5cqw; letter-spacing: -0.02em; margin-bottom: 0.2cqw; }
+  .mock__form i { font-style: normal; font-size: 1.15cqw; color: #7b8a85; border: 1px solid #dfe3dc; border-radius: 0.8cqw; padding: 0.9cqw 1.1cqw; }
+  .mock__form u { text-decoration: none; text-align: center; font-size: 1.3cqw; font-weight: 600; background: var(--m-deep); color: #fff; border-radius: 99px; padding: 1cqw; }
+  .mock__form small { font-size: 1cqw; color: #7b8a85; text-align: center; }
+  .mock__cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4cqw; padding: 1.6cqw 1.8cqw 1.8cqw; }
   .mock__card {
     position: relative; overflow: hidden;
     background: #fff; border: 1px solid #e6e3d8; border-radius: 1.4cqw;
-    padding: 1.5cqw; display: flex; align-items: center; gap: 1.3cqw;
+    padding: 1.1cqw; display: flex; align-items: center; gap: 1.3cqw;
   }
   .mock__dot {
-    width: 4cqw; height: 4cqw; border-radius: 1.1cqw; flex: none;
-    background: var(--m-cream); color: var(--m-deep);
-    display: grid; place-items: center; position: relative; z-index: 2;
+    width: 5.6cqw; height: 5.6cqw; border-radius: 1.1cqw; flex: none; overflow: hidden;
+    background: var(--m-cream); position: relative; z-index: 2;
   }
-  .mock__dot svg { width: 55%; height: 55%; }
+  .mock__dot img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .mock__ctx { display: grid; gap: 0.5cqw; justify-items: start; min-width: 0; position: relative; z-index: 2; }
   .mock__ct { font-size: 1.55cqw; font-weight: 700; letter-spacing: -0.02em; }
   .mock__cp { font-size: 1.15cqw; color: #5d6f69; }
@@ -164,7 +172,7 @@ const star = 'M10 1.6l2.5 5.3 5.8.7-4.3 4 1.1 5.7L10 14.5l-5.1 2.8 1.1-5.7-4.3-4
   .mock .sk--pill { border-radius: 99px; inset: 0; }
   .mock .sk--panel { inset: 0; background: var(--wire); border-radius: 0; z-index: 1; }
   .mock .sk--img {
-    inset: 0; border-radius: 0; z-index: 3;
+    inset: 2.4cqw 2.4cqw 2.4cqw 56%; border-radius: 1.2cqw; z-index: 1;
     background:
       linear-gradient(to top right, transparent calc(50% - 1px), #c9c9c9 50%, transparent calc(50% + 1px)),
       linear-gradient(to bottom right, transparent calc(50% - 1px), #c9c9c9 50%, transparent calc(50% + 1px)),
