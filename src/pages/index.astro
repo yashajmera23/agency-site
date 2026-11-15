@@ -17,6 +17,20 @@ import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
 const title = `${site.name}: a new website for your business in ${site.days} days`;
 const description = `We build local businesses a great website in ${site.days} days for one fixed price, then hand it over. No monthly fees, no contract.`;
+const url = new URL(import.meta.env.BASE_URL.replace(/\/?$/, '/'), Astro.site).href;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  url,
+  description,
+  logo: `${url}favicon.svg`,
+  image: `${url}og.png`,
+  priceRange: site.price,
+  areaServed: ['US', 'GB', 'CA', 'AU'],
+  founder: { '@type': 'Person', name: 'Yash', jobTitle: 'UX designer' },
+  makesOffer: { '@type': 'Offer', name: `Business website in ${site.days} days`, price: site.price.replace(/[^0-9.]/g, ''), priceCurrency: 'USD' },
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -25,6 +39,20 @@ const description = `We build local businesses a great website in ${site.days} d
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#111111" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={`${url}og.png`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${url}og.png`} />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

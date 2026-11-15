@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yashajmera23.github.io/agency-site/sitemap.xml

@@ -10,7 +10,13 @@ const faqs = [
   ["Who looks after the site later?", "You do. We hand everything over with a short video that shows how to change the text and photos."],
   ["Where are you based?", "In India. We work with business owners abroad by email and video call."],
 ];
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+};
 ---
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 <section class="section" id="questions">
   <div class="wrap">
     <div class="head">
