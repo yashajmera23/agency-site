@@ -331,15 +331,24 @@ function hero(dots) {
 
 /* Header: out of the way while reading down, back when scrolling up. */
 function header() {
-  const tops = document.querySelectorAll('.top');
+  const top = document.querySelector('.top');
   const heroEl = document.querySelector('.hero');
   ScrollTrigger.create({
     start: 0,
     end: 'max',
     onUpdate: (self) => {
       const pastHero = self.scroll() > heroEl.offsetHeight - window.innerHeight * 1.6;
-      tops.forEach((t) => t.classList.toggle('top--hidden', pastHero && self.direction === 1));
+      top.classList.toggle('top--hidden', pastHero && self.direction === 1);
+      top.classList.toggle('top--solid', self.scroll() > heroEl.offsetHeight - 70);
     },
+  });
+  // White header text while a dark section sits under it.
+  let dark = 0;
+  document.querySelectorAll('.band, .nudge__in, .cta').forEach((el) => {
+    ScrollTrigger.create({
+      trigger: el, start: 'top 40px', end: 'bottom 40px',
+      onToggle: (self) => { dark += self.isActive ? 1 : -1; top.classList.toggle('top--light', dark > 0); },
+    });
   });
 }
 
