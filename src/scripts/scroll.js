@@ -61,6 +61,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   cta();
   buttons();
   cards();
+  compare();
   pointer();
 
   if (document.fonts?.ready) document.fonts.ready.then(() => ScrollTrigger.refresh());
@@ -219,6 +220,16 @@ function hero(dots) {
     .to(q('.days'), { autoAlpha: 1, duration: 0.04 }, 0.14)
     .fromTo(q('.days__bar i'), { scaleX: 0 }, { scaleX: 1, duration: 0.66 }, 0.18);
 
+  // The wireframe shows its layout columns until colour arrives.
+  tl.to(q('.guides'), { opacity: 1, duration: 0.04 }, 0.16)
+    .to(q('.guides'), { opacity: 0, duration: 0.05 }, 0.3);
+
+  // "Research" arrives first with the search, checks the menu, then stays close.
+  tl.fromTo(q('.cursor--research'), { left: '8%', top: '-46%', autoAlpha: 0 }, { left: '25%', top: '-4%', autoAlpha: 1, duration: 0.06, ease: 'power2.out' }, 0.13)
+    .to(q('.cursor--research'), { left: '55%', top: '9%', duration: 0.06, ease: 'power2.inOut' }, 0.23)
+    .to(q('.cursor--research'), { left: '-6%', top: '72%', duration: 0.09, ease: 'power1.inOut' }, 0.38)
+    .to(q('.cursor--research'), { left: '-8%', top: '58%', duration: 0.1, ease: 'power1.inOut' }, 0.6);
+
   flyIn('.float--search', { y: -120, rotation: -8 }, 0.15);
   flyIn('.float--type', { x: 220, y: -80, rotation: 14 }, 0.17);
 
@@ -227,16 +238,31 @@ function hero(dots) {
   flyIn('.float--palette', { x: -240, y: 300, rotation: -18 }, 0.19);
   tl.to(q('.cursor--design'), { left: '74%', top: '44%', duration: 0.05, ease: 'power2.inOut' }, 0.265)
     .fromTo(panels, { clipPath: 'inset(0% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 100%)', duration: 0.06, stagger: 0.012, ease: 'power2.inOut' }, 0.3)
+    // the photo settles into place as its placeholder wipes away
+    .fromTo(q('.mock__img img'), { scale: 1.3 }, { scale: 1, duration: 0.1, ease: 'power2.out', force3D: false }, 0.3)
     .to(q('.cursor--design'), { left: '30%', top: '56%', duration: 0.05, ease: 'power2.inOut' }, 0.37)
     .fromTo(q('.select'), { autoAlpha: 0, scale: 1.12 }, { autoAlpha: 1, scale: 1, duration: 0.025, ease: 'power2.out' }, 0.405)
-    .to(q('.cursor--design'), { left: '-7%', top: '46%', duration: 0.06, ease: 'power1.inOut' }, 0.45);
+    .to(q('.cursor--design'), { left: '-7%', top: '46%', duration: 0.06, ease: 'power1.inOut' }, 0.45)
+    .to(q('.cursor--design'), { left: '60%', top: '24%', duration: 0.09, ease: 'power1.inOut' }, 0.6);
+
+  // "Writing" turns the grey bars in the headline and the cards into real words.
+  tl.fromTo(q('.cursor--words'), { left: '-34%', top: '34%', autoAlpha: 0 }, { left: '37%', top: '50%', autoAlpha: 1, duration: 0.07, ease: 'power2.out' }, 0.46)
+    .to(q('.cursor--words'), { left: '20%', top: '93%', duration: 0.08, ease: 'power1.inOut' }, 0.56)
+    .to(q('.cursor--words'), { left: '52%', top: '97%', duration: 0.07, ease: 'power1.inOut' }, 0.67);
 
   // "Build" types the grey bars into real words and buttons.
   tl.fromTo(q('.cursor--build'), { left: '116%', top: '10%', autoAlpha: 0 }, { left: '32%', top: '13%', autoAlpha: 1, duration: 0.07, ease: 'power2.out' }, 0.44)
     .to(q('.select'), { autoAlpha: 0, duration: 0.02 }, 0.5)
     .to(bars, { scaleX: 0, duration: 0.035, stagger: 0.011, ease: 'power1.in' }, 0.5)
-    .to(q('.cursor--build'), { left: '46%', top: '90%', duration: 0.17, ease: 'power1.inOut' }, 0.5)
-    .to(q('.cursor--build'), { left: '100%', top: '30%', duration: 0.06, ease: 'power1.inOut' }, 0.68);
+    .to(q('.cursor--build'), { left: '72%', top: '58%', duration: 0.08, ease: 'power1.inOut' }, 0.5)
+    .to(q('.cursor--build'), { left: '84%', top: '90%', duration: 0.08, ease: 'power1.inOut' }, 0.59)
+    .to(q('.cursor--build'), { left: '100%', top: '30%', duration: 0.06, ease: 'power1.inOut' }, 0.68)
+    // the small details drop in one by one: stars, badges, icons
+    .fromTo(q('.mock [data-pop]'), { autoAlpha: 0, scale: 0.4 }, { autoAlpha: 1, scale: 1, duration: 0.03, stagger: 0.012, ease: 'back.out(2.2)', force3D: false }, 0.57);
+
+  // "Testing" checks it on a phone.
+  tl.fromTo(q('.cursor--test'), { left: '132%', top: '112%', autoAlpha: 0 }, { left: '103%', top: '70%', autoAlpha: 1, duration: 0.07, ease: 'power2.out' }, 0.58)
+    .to(q('.cursor--test'), { left: '92%', top: '52%', duration: 0.07, ease: 'power1.inOut' }, 0.7);
   flyIn('.float--phone', { x: 200, y: 160, rotation: 12 }, 0.58);
   flyIn('.float--toast', { x: -200, y: 80, rotation: -6 }, 0.69, 0.05);
 
@@ -532,6 +558,16 @@ function about() {
   tl.fromTo(frame, { clipPath: 'inset(100% 0% 0% 0% round 20px)' }, { clipPath: 'inset(0% 0% 0% 0% round 20px)', ease: 'power3.out', duration: 1 })
     .fromTo(img, { scale: 1.3, filter: 'grayscale(1) contrast(1.1)' }, { scale: 1, filter: 'grayscale(0) contrast(1) saturate(0.8)', ease: 'none', duration: 1.4 }, 0)
     .from(fig.querySelector('figcaption'), { autoAlpha: 0, y: 12, duration: 0.4 }, 0.8);
+}
+
+/* Compare cards: the time bars grow to show how long each option takes. */
+function compare() {
+  const bars = gsap.utils.toArray('.cmp__time');
+  if (!bars.length) return;
+  gsap.fromTo(bars, { clipPath: 'inset(0% 100% 0% 0% round 8px)' }, {
+    clipPath: 'inset(0% 0% 0% 0% round 8px)', duration: 1.1, ease: 'power3.out', stagger: 0.14,
+    scrollTrigger: { trigger: '.cmp', start: 'top 70%' },
+  });
 }
 
 /* Custom pointer for mouse users. */

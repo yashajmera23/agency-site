@@ -3,8 +3,11 @@ import MockSite from './MockSite.astro';
 import { site } from '../site.js';
 import Arrow from './Arrow.astro';
 const cursors = [
+  { id: 'research', label: 'Research' },
   { id: 'design', label: 'Design' },
+  { id: 'words', label: 'Writing' },
   { id: 'build', label: 'Build' },
+  { id: 'test', label: 'Testing' },
   { id: 'you', label: 'You' },
 ];
 const chars = `${site.days} days.`.split('');
@@ -28,7 +31,7 @@ const chars = `${site.days} days.`.split('');
           <span class="browser__url">yourbusiness.com</span>
           <span class="browser__live">Live</span>
         </div>
-        <div class="browser__body"><MockSite wire /></div>
+        <div class="browser__body"><MockSite wire /><div class="guides"></div></div>
       </div></div>
 
       <div class="select" aria-hidden="true"><b>Headline</b><i /><i /><i /><i /></div>
@@ -119,7 +122,8 @@ const chars = `${site.days} days.`.split('');
     display: inline-flex; align-items: center; gap: 6px;
   }
   .browser__live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #18b85c; }
-  .browser__body { min-height: 0; }
+  .browser__body { min-height: 0; position: relative; }
+  .guides { display: none; }
 
   .cursor, .approve, .hero__hint, .hero__grid, .float, .select, .days { display: none; }
 
@@ -151,6 +155,15 @@ const chars = `${site.days} days.`.split('');
   }
   .motion .browser { opacity: 0; will-change: transform, opacity; transform-origin: 50% 100%; }
   .motion .browser__live { opacity: 0; }
+
+  /* layout columns, shown while the page is still a wireframe */
+  .motion .guides {
+    display: block; position: absolute; inset: 0 3%; z-index: 5; opacity: 0; pointer-events: none;
+    --col: calc((100% - 11 * 1.4%) / 12);
+    background: repeating-linear-gradient(90deg, rgba(255, 79, 26, 0.06) 0 var(--col), transparent var(--col) calc(var(--col) + 1.4%));
+  }
+
+  .motion .hero .mock [data-pop] { opacity: 0; visibility: hidden; }
 
   /* selection box, like a design tool */
   .motion .select {
@@ -217,6 +230,12 @@ const chars = `${site.days} days.`.split('');
   }
   .cursor--build svg { fill: #2f5bff; }
   .cursor--build span { background: #2f5bff; }
+  .cursor--research svg { fill: #7c3aed; }
+  .cursor--research span { background: #7c3aed; }
+  .cursor--words svg { fill: #0b8f7a; }
+  .cursor--words span { background: #0b8f7a; }
+  .cursor--test svg { fill: #d02f8e; }
+  .cursor--test span { background: #d02f8e; }
   .cursor--you svg { fill: var(--ink); }
   .cursor--you span { background: var(--ink); }
 
@@ -253,6 +272,7 @@ const chars = `${site.days} days.`.split('');
     .hero .browser { aspect-ratio: 4 / 5; }
     .cursor span { font-size: 11px; padding: 3px 8px; margin-top: 12px; }
     .cursor svg { width: 16px; height: 16px; }
+    .motion .cursor--research, .motion .cursor--test { display: none; }
     .motion .approve { font-size: 13px; padding: 10px 16px; right: 3%; bottom: -8%; }
     .browser__bar { padding: 8px 10px; }
     .browser__url, .browser__live { font-size: 10px; }
@@ -263,20 +283,28 @@ const chars = `${site.days} days.`.split('');
     .motion .days { left: 50%; transform: translateX(-50%); bottom: 18px; }
 
     /* the example site switches to a phone layout so it stays readable */
-    .hero .mock__links { display: none; }
+    .hero .mock__links, .hero .mock__tel, .hero .mock__badge, .hero .mock__go { display: none; }
+    .hero .mock__mark { width: 6cqw; height: 6cqw; }
+    .hero .mock .mock__logo { gap: 2cqw; }
+    .hero .mock__stars svg { width: 3.4cqw; height: 3.4cqw; }
+    .hero .mock__stars em { font-size: 2.9cqw; margin-left: 1.4cqw; }
+    .hero .mock__tag { font-size: 2.6cqw; padding: 1.8cqw 3cqw 1.8cqw 2cqw; border-radius: 2.6cqw; gap: 1.8cqw; left: 2.4cqw; bottom: 2.4cqw; }
+    .hero .mock__tag svg { width: 5cqw; height: 5cqw; }
+    .hero .mock__tag b { font-size: 2.9cqw; }
+    .hero .mock__ctx { gap: 0; }
     .hero .mock__nav { font-size: 3.4cqw; padding: 4cqw; }
     .hero .mock__logo { font-size: 4.4cqw; }
     .hero .mock__btn--sm { font-size: 3.2cqw; padding: 2cqw 4cqw; }
     .hero .mock__hero { grid-template-columns: 1fr; margin: 0 4cqw; padding: 5.5cqw; gap: 4cqw; border-radius: 4cqw; align-content: start; align-items: start; }
     .hero .mock__copy { gap: 3cqw; }
-    .hero .mock__kicker { font-size: 2.8cqw; }
+    .hero .mock__kicker { font-size: 2.6cqw; padding: 1cqw 2.4cqw; }
     .hero .mock__h { font-size: 8.6cqw; }
-    .hero .mock__p { font-size: 3.6cqw; }
+    .hero .mock__p { display: none; }
     .hero .mock__btn { font-size: 3.6cqw; padding: 2.6cqw 5cqw; }
     .hero .mock__img { aspect-ratio: 16 / 6; border-radius: 3cqw; }
     .hero .mock__cards { padding: 4cqw; gap: 2.5cqw; }
-    .hero .mock__card { padding: 3cqw; border-radius: 3cqw; }
-    .hero .mock__dot { width: 4cqw; height: 4cqw; }
+    .hero .mock__card { padding: 2.4cqw; border-radius: 3cqw; flex-direction: column; align-items: flex-start; gap: 1.6cqw; }
+    .hero .mock__dot { width: 7cqw; height: 7cqw; border-radius: 2cqw; }
     .hero .mock__ct { font-size: 3.1cqw; }
     .hero .mock__cp { display: none; }
   }

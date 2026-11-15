@@ -1,13 +1,48 @@
 ---
 import { site } from '../site.js';
-const cols = ['Build it yourself', 'Big agency', 'Us'];
-const rows = [
-  ['Cost', 'A monthly plan, plus your time', 'Often $2,500 to $25,000', `${site.price}, paid once`],
-  ['Time to go live', 'However many evenings it takes', 'Usually 4 to 10 weeks', `${site.days} days`],
-  ['Who does the work', 'You', 'A team, through an account manager', 'Our small team, with one point of contact'],
-  ['Monthly fee', 'Yes, for as long as the site is up', 'Often, for a care plan', 'None'],
-  ['Who owns it', 'Tied to the builder you picked', 'Depends on the contract', 'You, all of it'],
+// Each row: [label, value, mark]. Marks: good, ok, bad.
+// `time` draws the wait on one shared 10-week scale: [solid %, likely-extra %].
+const options = [
+  {
+    name: 'Build it yourself',
+    time: [100, 0, true],
+    rows: [
+      ['Cost', 'A monthly plan, plus your time', 'ok'],
+      ['Time to go live', 'However many evenings it takes', 'bad'],
+      ['Who does the work', 'You', 'bad'],
+      ['Monthly fee', 'Yes, for as long as the site is up', 'bad'],
+      ['Who owns it', 'Tied to the builder you picked', 'ok'],
+    ],
+  },
+  {
+    name: 'Big agency',
+    time: [40, 60],
+    rows: [
+      ['Cost', 'Often $2,500 to $25,000', 'bad'],
+      ['Time to go live', 'Usually 4 to 10 weeks', 'bad'],
+      ['Who does the work', 'A team, through an account manager', 'ok'],
+      ['Monthly fee', 'Often, for a care plan', 'ok'],
+      ['Who owns it', 'Depends on the contract', 'ok'],
+    ],
+  },
+  {
+    name: 'Us',
+    us: true,
+    time: [10, 0],
+    rows: [
+      ['Cost', `${site.price}, paid once`, 'good'],
+      ['Time to go live', `${site.days} days`, 'good'],
+      ['Who does the work', 'Our small team, with one point of contact', 'good'],
+      ['Monthly fee', 'None', 'good'],
+      ['Who owns it', 'You, all of it', 'good'],
+    ],
+  },
 ];
+const marks = {
+  good: ['M5.5 10.4l3 3 6-6.4', 'Good'],
+  ok: ['M6 10h8', 'Mixed'],
+  bad: ['M6.5 6.5l7 7M13.5 6.5l-7 7', 'Weak'],
+};
 ---
 <section class="section" id="compare">
   <div class="wrap">
@@ -15,19 +50,96 @@ const rows = [
       <h2 class="h2">Your three options.</h2>
       <p class="lead" data-reveal>You can build a site yourself, hire an agency, or work with a small studio like us. This is how they differ.</p>
     </div>
-    <table class="compare" data-reveal>
-      <thead>
-        <tr><td></td>{cols.map((c, i) => <th scope="col" class:list={{ us: i === 2 }}>{c}</th>)}</tr>
-      </thead>
-      <tbody>
-        {rows.map(([label, ...cells]) => (
-          <tr>
-            <th scope="row">{label}</th>
-            {cells.map((c, i) => <td class:list={{ us: i === 2 }} data-col={cols[i]}>{c}</td>)}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-    <p class="compare__note">Agency prices and timelines come from published packages of agencies serving small businesses in 2026.</p>
+    <div class="cmp">
+      {options.map((o) => (
+        <article class:list={['cmp__card', { 'cmp__card--us': o.us }]} data-reveal>
+          <h3>{o.name}{o.us && <span>Our offer</span>}</h3>
+          {o.rows.map(([label, value, mark], i) => (
+            <div class="cmp__row">
+              <svg class={`cmp__mark cmp__mark--${mark}`} viewBox="0 0 20 20" role="img" aria-label={marks[mark][1]}>
+                <circle cx="10" cy="10" r="10" /><path d={marks[mark][0]} fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div>
+                <span class="cmp__label">{label}</span>
+                <p>{value}</p>
+                {i === 1 && (
+                  <div class:list={['cmp__time', { 'cmp__time--open': o.time[2] }]} aria-hidden="true">
+                    <i class="cmp__fill" style={`width:${o.time[0]}%`} />
+                    {o.time[1] > 0 && <i class="cmp__fill cmp__fill--maybe" style={`width:${o.time[1]}%`} />}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </article>
+      ))}
+    </div>
+    <p class="compare__note">Agency prices and timelines come from published packages of agencies serving small businesses in 2026. The bars show the wait on one 10-week scale.</p>
   </div>
 </section>
+
+<style is:global>
+  .cmp {
+    display: grid; grid-template-columns: 1fr 1fr 1.14fr; grid-template-rows: auto repeat(5, auto);
+    gap: 0 16px; align-items: stretch;
+  }
+  .cmp__card {
+    display: grid; grid-row: span 6; grid-template-rows: subgrid;
+    background: var(--wire); border-radius: var(--radius);
+    padding: clamp(22px, 2.4vw, 36px) clamp(20px, 2.4vw, 36px) clamp(10px, 1.4vw, 20px);
+  }
+  .cmp__card h3 {
+    font-size: var(--t-h3); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+    padding-bottom: clamp(18px, 2vw, 28px);
+  }
+  .cmp__card h3 span {
+    font-size: var(--t-small); font-weight: 600; letter-spacing: 0;
+    background: var(--accent); color: var(--accent-ink); padding: 5px 12px; border-radius: 99px;
+  }
+  .cmp__row {
+    display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: start;
+    padding: 16px 0; border-top: 1px solid rgba(17, 17, 17, 0.1);
+  }
+  .cmp__mark { width: 22px; height: 22px; margin-top: 2px; }
+  .cmp__mark--good circle { fill: var(--accent); }
+  .cmp__mark--good path { stroke: var(--accent-ink); }
+  .cmp__mark--ok circle { fill: #dcdcdc; }
+  .cmp__mark--ok path { stroke: #5c5c5c; }
+  .cmp__mark--bad circle { fill: #f6d9d2; }
+  .cmp__mark--bad path { stroke: #b3361c; }
+  .cmp__label { display: block; font-size: var(--t-small); color: var(--muted); }
+  .cmp__row p { font-weight: 500; line-height: 1.3; margin-top: 2px; text-wrap: balance; }
+  .cmp__time {
+    display: flex; gap: 2px; height: 8px; margin-top: 12px; border-radius: 8px;
+    background: rgba(17, 17, 17, 0.08); overflow: hidden;
+  }
+  .cmp__fill { display: block; height: 100%; background: #8f8f8f; border-radius: 8px; transform-origin: 0 50%; }
+  .cmp__fill--maybe { background: repeating-linear-gradient(-55deg, #8f8f8f 0 3px, transparent 3px 7px); border-radius: 0 8px 8px 0; }
+  .cmp__time--open .cmp__fill { background: repeating-linear-gradient(90deg, #8f8f8f 0 8px, transparent 8px 14px); border-radius: 0; }
+
+  .cmp__card--us { background: var(--ink); color: #fff; box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.5); }
+  .cmp__card--us .cmp__row { border-top-color: rgba(255, 255, 255, 0.16); }
+  .cmp__card--us .cmp__label { color: rgba(255, 255, 255, 0.62); }
+  .cmp__card--us .cmp__row p { font-weight: 600; font-size: var(--t-lead); letter-spacing: -0.015em; line-height: 1.2; }
+  .cmp__card--us .cmp__time { background: rgba(255, 255, 255, 0.16); }
+  .cmp__card--us .cmp__fill { background: var(--accent); }
+  .compare__note { margin-top: 20px; font-size: var(--t-small); color: var(--muted); max-width: 70ch; }
+
+  @media (max-width: 900px) {
+    .cmp { grid-template-columns: 1fr 1fr; grid-template-rows: none; gap: 16px; }
+    .cmp__card { grid-row: auto; display: block; }
+    .cmp__card--us { grid-column: 1 / -1; order: -1; }
+  }
+  /* phones: our card first, then swipe to see the other two */
+  @media (max-width: 640px) {
+    .cmp {
+      display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 8px;
+      scroll-padding-inline: var(--gutter); scrollbar-width: none;
+    }
+    .cmp::-webkit-scrollbar { display: none; }
+    .cmp__card { flex: 0 0 84%; scroll-snap-align: start; }
+    .cmp__row { padding: 13px 0; }
+  }
+</style>
