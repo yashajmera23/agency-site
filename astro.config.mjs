@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://yashajmera23.github.io',
-  base: process.env.NODE_ENV === 'production' ? '/agency-site' : '/',
+  site: 'https://bynextmonday.com',
+  base: '/',
   server: { port: 4321, host: true },
 });

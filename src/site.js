@@ -2,7 +2,7 @@
 // Change them here and the whole site updates.
 export const site = {
   name: 'Next Monday',
-  email: 'hello@example.com',   // TODO: real email address
-  price: '$800',                // TODO: confirm the price shown on the site
+  email: 'yash@bynextmonday.com',
+  price: '$800',
   days: 7,
 };
