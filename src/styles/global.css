@@ -173,17 +173,10 @@ a { color: inherit; }
 /* 10. cta + footer */
 .cta { background: var(--ink); color: #fff; border-radius: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px) 0 0; text-align: center; }
 .cta .h2 { max-width: 13ch; margin: 0 auto; }
-.cta .lead { color: #b5b5b5; margin-inline: auto; }
+.cta .lead { color: #b5b5b5; margin-inline: auto; text-wrap: balance; }
 .cta .btn { background: #fff; color: var(--ink); margin-top: 40px; }
 .cta .btn:hover { background: var(--accent); color: #fff; }
 .cta .label { color: #b5b5b5; }
-.reach span { display: block; }
-.reach { margin: 20px auto 0; max-width: 60ch; font-size: var(--t-small); color: #b5b5b5; line-height: 1.7; text-wrap: balance; }
-.reach a, .reach button {
-  font: inherit; color: #fff; background: none; border: 0; padding: 6px 0; cursor: pointer;
-  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255, 255, 255, 0.4);
-}
-.reach a:hover, .reach button:hover { text-decoration-color: #fff; }
 .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: var(--section); padding-top: 24px; border-top: 1px solid #2c2c2c; font-size: var(--t-small); color: #9a9a9a; text-align: left; }
 .foot a { color: #fff; }
 

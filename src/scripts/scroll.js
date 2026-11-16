@@ -35,7 +35,7 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
   document.querySelectorAll('a[href^="#"]').forEach((a) => {
     a.addEventListener('click', (e) => {
       const id = a.getAttribute('href');
-      if (id.length < 2) return;
+      if (id.length < 2 || a.hasAttribute('data-open-form')) return;
       const target = document.querySelector(id);
       if (!target) return;
       // while the intro holds the page still, let the browser jump there itself
@@ -44,6 +44,9 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
       lenis.scrollTo(target);
     });
   });
+
+  // the page holds still while the contact form is open
+  document.addEventListener('form:toggle', (e) => (e.detail ? lenis.stop() : lenis.start()));
 
   const dots = dotField(document.querySelector('.hero__dots'));
 
