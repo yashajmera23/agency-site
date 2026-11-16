@@ -3,6 +3,11 @@ import { site } from '../site.js';
 import Arrow from './Arrow.astro';
 const mail = `mailto:${site.email}?subject=${encodeURIComponent('Free review of my website')}&body=${encodeURIComponent('My website: ')}`;
 const letters = site.name.split('');
+// Email links only work when the visitor has an email app set up, so we also
+// offer webmail and a copy button right under the main button.
+const q = { to: site.email, subject: 'Free review of my website', body: 'My website: ' };
+const gmail = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(q.to)}&su=${encodeURIComponent(q.subject)}&body=${encodeURIComponent(q.body)}`;
+const outlook = `https://outlook.office.com/mail/deeplink/compose?to=${encodeURIComponent(q.to)}&subject=${encodeURIComponent(q.subject)}&body=${encodeURIComponent(q.body)}`;
 ---
 <section class="section cta" id="review">
   <svg class="badge" viewBox="0 0 200 200" aria-hidden="true">
@@ -15,6 +20,7 @@ const letters = site.name.split('');
     <h2 class="h2" data-reveal>Send us your website.</h2>
     <p class="lead" data-reveal>We'll send back a 2-minute video showing what we would fix. Keep it, even if you never talk to us again.</p>
     <a class="btn btn--lg" href={mail} data-reveal><span>Get my free review</span><Arrow /></a>
+    <p class="reach" data-reveal><span>Button didn't open your email?</span> Use <a href={gmail} target="_blank" rel="noopener">Gmail</a>, <a href={outlook} target="_blank" rel="noopener">Outlook</a>, or <button type="button" data-copy={site.email} aria-live="polite">copy our email address</button>.</p>
     <div class="mega" aria-hidden="true" style={`--n:${letters.length + 1}`}>
       {letters.map((l) => (l === ' ' ? <span class="mega__sp" /> : <span>{l}</span>))}<span class="mega__dot">.</span>
     </div>
@@ -24,3 +30,21 @@ const letters = site.name.split('');
     </footer>
   </div>
 </section>
+
+<script>
+  document.querySelectorAll('[data-copy]').forEach((b) => {
+    const label = b.textContent;
+    b.addEventListener('click', async () => {
+      const email = b.dataset.copy;
+      try {
+        await navigator.clipboard.writeText(email);
+        b.textContent = `copied: ${email}`;
+      } catch {
+        // no clipboard access: show the address so it can be copied by hand
+        b.textContent = email;
+        return;
+      }
+      setTimeout(() => { b.textContent = label; }, 4000);
+    });
+  });
+</script>

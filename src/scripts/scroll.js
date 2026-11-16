@@ -38,6 +38,8 @@ mm.add('(prefers-reduced-motion: no-preference)', () => {
       if (id.length < 2) return;
       const target = document.querySelector(id);
       if (!target) return;
+      // while the intro holds the page still, let the browser jump there itself
+      if (lenis.isStopped) return;
       e.preventDefault();
       lenis.scrollTo(target);
     });
@@ -86,9 +88,12 @@ function intro(lenis) {
   const o = { v: 1 };
   const total = Number(document.querySelector('.days')?.dataset.total) || 7;
   lenis.stop();
-  gsap.timeline({ onComplete: () => { loader.remove(); lenis.start(); } })
+  // The page is usable the moment the cover has lifted; the rest of the
+  // intro plays on top without holding scroll or clicks.
+  gsap.timeline()
     .to(o, { v: total, duration: 1.1, ease: 'power1.inOut', onUpdate: () => { n.textContent = Math.round(o.v); } })
     .to(loader, { yPercent: -100, duration: 0.9, ease: 'power4.inOut' }, '+=0.15')
+    .call(() => { loader.remove(); lenis.start(); })
     .to(chars, { y: 0, duration: 1.1, ease: 'power4.out', stagger: 0.045 }, '-=0.45')
     .from('.hero__eyebrow, .hero__hint', { opacity: 0, y: 12, duration: 0.8, ease: 'power2.out', stagger: 0.15, clearProps: 'transform' }, '-=0.7')
     .from('.top > *', { opacity: 0, y: -12, duration: 0.6, ease: 'power2.out', stagger: 0.08, clearProps: 'all' }, '-=0.8');
