@@ -7,5 +7,5 @@ export const site = {
   days: 7,
   // Web3Forms access key for the contact form. It's safe to be public.
   // While it's empty, the form hands visitors a ready-written email instead.
-  formKey: '',
+  formKey: '2be7cb16-114d-4f24-8357-2902fa57065e',
 };
