@@ -397,3 +397,19 @@ html { scrollbar-color: #bdbdbd transparent; caret-color: var(--accent); }
   .work__shot figcaption span { display: none; }
 }
 .mega__dot { color: #ff4f1a; }
+
+/* pages for one kind of firm (/web-design-for-…/) */
+.nhero { padding-top: clamp(140px, 20vh, 220px); }
+.nhero__h1 { font-size: var(--t-h2); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; max-width: 15ch; text-wrap: balance; }
+.nhero .lead { max-width: 52ch; margin-top: clamp(24px, 3vw, 40px); }
+.nhero__act { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 28px; margin-top: clamp(32px, 4vw, 48px); }
+.nhero__link { color: var(--ink); font-weight: 500; text-underline-offset: 4px; }
+.nchecks { grid-template-columns: 1fr 1fr; column-gap: clamp(24px, 4vw, 64px); }
+.nchecks li:nth-last-child(2) { border-bottom: 1px solid var(--line); }
+.nproof { margin-top: 28px; color: var(--muted); max-width: 46ch; }
+.nproof a, .nothers a { color: var(--ink); }
+.nothers { margin-top: clamp(40px, 5vw, 64px); color: var(--muted); max-width: 60ch; }
+@media (max-width: 860px) {
+  .nchecks { grid-template-columns: 1fr; }
+  .nchecks li:nth-last-child(2) { border-bottom: 0; }
+}

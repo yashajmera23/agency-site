@@ -1,0 +1,108 @@
+---
+// One page per kind of firm we build for. Content lives in src/data/niches.js.
+import Base from '../layouts/Base.astro';
+import Price from '../components/Price.astro';
+import Cta from '../components/Cta.astro';
+import Arrow from '../components/Arrow.astro';
+import { site } from '../site.js';
+import { niches } from '../data/niches.js';
+
+export function getStaticPaths() {
+  return niches.map((n) => ({ params: { slug: n.slug }, props: { n } }));
+}
+const { n } = Astro.props;
+const path = `/${n.slug}/`;
+const home = new URL('/', Astro.site).href;
+const others = niches.filter((o) => o.slug !== n.slug);
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: n.h1.replace(/\.$/, ''),
+    serviceType: 'Website design',
+    description: n.description,
+    url: new URL(path, Astro.site).href,
+    areaServed: ['US', 'CA', 'GB', 'AU'],
+    provider: { '@type': 'ProfessionalService', name: site.name, url: home },
+    offers: { '@type': 'Offer', price: site.price.replace(/[^0-9.]/g, ''), priceCurrency: 'USD' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: n.faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: site.name, item: home },
+      { '@type': 'ListItem', position: 2, name: n.short, item: new URL(path, Astro.site).href },
+    ],
+  },
+];
+---
+<Base title={n.title} description={n.description} path={path} ld={ld}>
+  <section class="section nhero">
+    <div class="wrap">
+      <span class="label">{n.label}</span>
+      <h1 class="nhero__h1">{n.h1}</h1>
+      <p class="lead">{n.lead}</p>
+      <div class="nhero__act">
+        <a class="btn btn--lg" href="#start" data-open-form><span>Start a project</span><Arrow /></a>
+        <a class="nhero__link" href="#price">See what's included</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head"><h2 class="h2">{n.checksTitle}</h2></div>
+      <ol class="points nchecks">
+        {n.checks.map(([t, d]) => (
+          <li><div><b>{t}</b><p>{d}</p></div></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="head"><h2 class="h2">{n.buildTitle}</h2></div>
+      <div class="fit">
+        <div class="fit__card">
+          <h3>Included in the {site.price} site</h3>
+          <ul class="ticks">{n.build.map((b) => <li>{b}</li>)}</ul>
+        </div>
+        <div class="fit__card fit__card--no">
+          <h3>Not included</h3>
+          <ul class="ticks ticks--no">{n.notBuild.map((b) => <li>{b}</li>)}</ul>
+          {n.proof && (
+            <p class="nproof">{n.proof} <a href="/#work">See the work</a></p>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Price />
+
+  <section class="section" id="questions">
+    <div class="wrap">
+      <div class="head"><h2 class="h2">Questions you might have.</h2></div>
+      <div class="faq">
+        {n.faqs.map(([q, a]) => (
+          <details><summary>{q}</summary><p>{a}</p></details>
+        ))}
+      </div>
+      <p class="nothers">
+        We also build websites for{' '}
+        {others.map((o, i) => (
+          <>{i > 0 && ', '}<a href={`/${o.slug}/`}>{o.short.replace(/^\w/, (c) => c.toLowerCase())}</a></>
+        ))} and other <a href="/">small businesses</a>.
+      </p>
+    </div>
+  </section>
+
+  <Cta />
+</Base>

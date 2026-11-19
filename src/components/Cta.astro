@@ -1,6 +1,7 @@
 ---
 import { site } from '../site.js';
 import Arrow from './Arrow.astro';
+import { niches } from '../data/niches.js';
 const letters = site.name.split('');
 const ring = `NEW WEBSITE · ${site.days} DAYS · ${site.price}, PAID ONCE ·`;
 ---
@@ -20,6 +21,12 @@ const ring = `NEW WEBSITE · ${site.days} DAYS · ${site.price}, PAID ONCE ·`;
     </div>
     <footer class="foot">
       <span>© {new Date().getFullYear()} {site.name}. A small web design studio.</span>
+      <nav class="foot__for" aria-label="Who we build for">
+        Websites for{' '}
+        {niches.map((n, i) => (
+          <>{i > 0 && (i === niches.length - 1 ? ' and ' : ', ')}<a href={`/${n.slug}/`}>{n.short.replace(/^\w/, (c) => c.toLowerCase())}</a></>
+        ))}
+      </nav>
       <a href={`mailto:${site.email}`}>{site.email}</a>
     </footer>
   </div>

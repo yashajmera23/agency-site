@@ -1,0 +1,62 @@
+---
+// The shell every page shares: head tags, header, contact form.
+import '../styles/global.css';
+import { site } from '../site.js';
+import StartForm from '../components/StartForm.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string; // e.g. '/web-design-for-accountants/'
+  ld?: object[];
+  home?: boolean;
+}
+const { title, description, path = '/', ld = [], home = false } = Astro.props;
+const url = new URL(path, Astro.site).href;
+const og = new URL('/og.png', Astro.site).href;
+// on the home page the nav scrolls; elsewhere it goes back to the home page sections
+const to = (id: string) => (home ? `#${id}` : `/#${id}`);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#111111" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={og} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={og} />
+    {ld.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <slot name="head" />
+  </head>
+  <body>
+    <slot name="before" />
+    <header class="top">
+      <a class="top__logo" href={home ? '#' : '/'} aria-label={site.name}>{site.name}<i>.</i></a>
+      <nav class="top__nav" aria-label="Sections">
+        <a href={to('work')}>Work</a><a href={to('process')}>How it works</a><a href={to('price')}>Price</a><a href={to('questions')}>Questions</a>
+      </nav>
+      <a class="btn" href="#start" data-open-form>Start a project</a>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <StartForm />
+    <slot name="after" />
+  </body>
+</html>

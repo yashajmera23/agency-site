@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css';
+import Base from '../layouts/Base.astro';
 import { site } from '../site.js';
 import Hero from '../components/Hero.astro';
 import Statement from '../components/Statement.astro';
@@ -14,7 +14,6 @@ import Price from '../components/Price.astro';
 import Fit from '../components/Fit.astro';
 import Faq from '../components/Faq.astro';
 import Cta from '../components/Cta.astro';
-import StartForm from '../components/StartForm.astro';
 const title = `Small Business Website Design in ${site.days} Days | ${site.name}`;
 const description = `Website design for small businesses and professional firms. A new site in ${site.days} days for ${site.price}, paid once. No monthly fees, no long-term contract.`;
 const url = new URL(import.meta.env.BASE_URL.replace(/\/?$/, '/'), Astro.site).href;
@@ -32,71 +31,36 @@ const ld = {
   makesOffer: { '@type': 'Offer', name: `Business website in ${site.days} days`, price: site.price.replace(/[^0-9.]/g, ''), priceCurrency: 'USD' },
 };
 ---
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={url} />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#111111" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={site.name} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={url} />
-    <meta property="og:image" content={`${url}og.png`} />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${url}og.png`} />
-    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/favicon.svg`} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <!-- Turn the scroll scene on before first paint, only if motion is allowed. -->
-    <script is:inline>
-      // Add ?motion=off to the address to preview the no-motion version.
-      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches && !/[?&]motion=off/.test(location.search)) {
-        document.documentElement.classList.add('motion');
-      }
-    </script>
-  </head>
-  <body>
+<Base title={title} description={description} ld={[ld]} home>
+  <!-- Turn the scroll scene on before first paint, only if motion is allowed. -->
+  <script is:inline slot="head">
+    // Add ?motion=off to the address to preview the no-motion version.
+    if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches && !/[?&]motion=off/.test(location.search)) {
+      document.documentElement.classList.add('motion');
+    }
+  </script>
+  <Fragment slot="before">
     <div class="loader" aria-hidden="true"><span>Day</span><b data-loader>1</b></div>
     <div class="progress" aria-hidden="true"><i></i></div>
-    <header class="top">
-      <a class="top__logo" href="#" aria-label={site.name}>{site.name}<i>.</i></a>
-      <nav class="top__nav" aria-label="Sections">
-        <a href="#work">Work</a><a href="#process">How it works</a><a href="#price">Price</a><a href="#questions">Questions</a>
-      </nav>
-      <a class="btn" href="#start" data-open-form>Start a project</a>
-    </header>
-    <main>
-      <Hero />
-      <div class="band">
-        <Statement />
-        <Marquee />
-      </div>
-      <div class="sheet">
-      <Problem />
-      <Included />
-      <Process />
-      <Work />
-      <Nudge />
-      <Compare />
-      <Price />
-      <Fit />
-      <Faq />
-      </div>
-      <Cta />
-    </main>
-    <StartForm />
-    <script>
-      import '../scripts/scroll.js';
-    </script>
-  </body>
-</html>
+  </Fragment>
+  <Hero />
+  <div class="band">
+    <Statement />
+    <Marquee />
+  </div>
+  <div class="sheet">
+  <Problem />
+  <Included />
+  <Process />
+  <Work />
+  <Nudge />
+  <Compare />
+  <Price />
+  <Fit />
+  <Faq />
+  </div>
+  <Cta />
+  <script>
+    import '../scripts/scroll.js';
+  </script>
+</Base>
