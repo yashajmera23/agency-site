@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://bynextmonday.com/sitemap.xml
